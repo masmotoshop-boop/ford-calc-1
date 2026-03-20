@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #f4f6f9;
+}
+
+.calc-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 15px;
+  background: #fff;
+  border-radius: 14px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 18px;
+}
+
+select, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 10px;
+}
+
+button {
+  background: #0a1f3b;
+  color: #fff;
+  border: none;
+}
+
+.result {
+  display: none;
+  margin-top: 10px;
+}
+
+.result.show {
+  display: block;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+.highlight span:last-child {
+  color: green;
+  font-weight: bold;
+}
+
+.total-box {
+  background: orange;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+}
+
+.total-payment-box {
+  background: red;
+  color: #fff;
+  padding: 10px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#totalPayment {
+  font-weight: bold;
+  white-space: nowrap;
+}

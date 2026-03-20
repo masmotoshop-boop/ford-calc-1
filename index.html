@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a1f3b">
+
+<title>Ford Calculator</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+<body>
+
+<div class="calc-container">
+
+  <h2>CHIẾT TÍNH CHI PHÍ LĂN BÁNH</h2>
+
+  <label>Dòng xe</label>
+  <select id="car"></select>
+
+  <label>Phiên bản</label>
+  <select id="version"></select>
+
+  <div id="promoBadge" class="badge"></div>
+
+  <label>Khu vực đăng ký</label>
+  <select id="area"></select>
+
+  <label>Phí dịch vụ đăng ký</label>
+  <input type="range" id="serviceRange" min="0" max="10000000" step="500000" value="3000000">
+  <div id="serviceValue"></div>
+
+  <div class="color-option">
+    <label>
+      <input type="checkbox" id="colorFee">
+      Chênh lệch màu (+8.000.000 đ)
+    </label>
+  </div>
+
+  <button id="calcBtn">Tính giá lăn bánh</button>
+  <button id="exportPDF">Xuất PDF</button>
+
+  <div id="captureArea">
+
+    <div class="result">
+      <div id="selectedCar"></div>
+
+      <div class="row"><span>Giá</span><span id="price"></span></div>
+      <div class="row"><span>KM</span><span id="promo"></span></div>
+      <div class="row highlight"><span>Sau giảm</span><span id="finalPrice"></span></div>
+
+      <div class="row"><span>Thuế</span><span id="tax"></span></div>
+      <div class="row"><span>Biển</span><span id="plate"></span></div>
+      <div class="row"><span>Đăng kiểm</span><span id="registration"></span></div>
+      <div class="row"><span>Đường bộ</span><span id="roadFee"></span></div>
+      <div class="row"><span>Bảo hiểm</span><span id="insurance"></span></div>
+      <div class="row"><span>Dịch vụ</span><span id="serviceFee"></span></div>
+
+      <div class="total-box">
+        <span>TỔNG</span>
+        <span id="total"></span>
+      </div>
+    </div>
+
+    <div class="finance-section">
+      <input type="range" id="loanRange" min="0" max="80" step="5">
+
+      <div class="row"><span>% vay</span><span id="loanPercent"></span></div>
+      <div class="row"><span>Tiền vay</span><span id="loanAmount"></span></div>
+      <div class="row"><span>Chi phí</span><span id="costs"></span></div>
+      <div class="row"><span>Vốn</span><span id="equity"></span></div>
+
+      <div class="total-payment-box">
+        <span>TRẢ TRƯỚC</span>
+        <span id="totalPayment"></span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="data.js" defer></script>
+<script src="app.js" defer></script>
+
+</body>
+</html>
