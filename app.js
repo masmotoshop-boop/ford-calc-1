@@ -1,159 +1,157 @@
-document.addEventListener("DOMContentLoaded", () => {
+// ===== HELPER =====
+const $ = id => document.getElementById(id);
 
-  const $ = id => document.getElementById(id);
+const format = n => (n || 0).toLocaleString('vi-VN') + ' đ';
 
-  const el = {
-    car: $('car'),
-    version: $('version'),
-    area: $('area'),
-    calc: $('calcBtn'),
+// ===== DATA =====
+const data = typeof FORD_DATA !== "undefined" ? FORD_DATA : {};
 
-    price: $('price'),
-    promo: $('promo'),
-    final: $('finalPrice'),
+if (!Object.keys(data).length) {
+  alert("Thiếu data.js");
+}
 
-    tax: $('tax'),
-    plate: $('plate'),
-    reg: $('registration'),
-    road: $('roadFee'),
-    ins: $('insurance'),
-    service: $('serviceFee'),
-    total: $('total'),
+// ===== ELEMENT =====
+const el = {
+  car: $('car'),
+  version: $('version'),
+  area: $('area'),
+  calc: $('calcBtn'),
 
-    loanRange: $('loanRange'),
-    loanPercent: $('loanPercent'),
-    loanAmount: $('loanAmount'),
+  price: $('price'),
+  promo: $('promo'),
+  final: $('finalPrice'),
 
-    costs: $('costs'),
-    equity: $('equity'),
-    totalPay: $('totalPayment'),
+  tax: $('tax'),
+  plate: $('plate'),
+  reg: $('registration'),
+  road: $('roadFee'),
+  ins: $('insurance'),
+  service: $('serviceFee'),
+  total: $('total'),
 
-    serviceRange: $('serviceRange'),
-    serviceValue: $('serviceValue'),
+  loanRange: $('loanRange'),
+  loanPercent: $('loanPercent'),
+  loanAmount: $('loanAmount'),
 
-    colorFee: $('colorFee'),
-    selectedCar: $('selectedCar'),
+  costs: $('costs'),
+  equity: $('equity'),
+  payment: $('totalPayment'),
 
-    result: document.querySelector('.result')
-  };
+  serviceRange: $('serviceRange'),
+  colorFee: $('colorFee'),
+  selectedCar: $('selectedCar')
+};
 
-  const format = n => (n || 0).toLocaleString('vi-VN') + ' đ';
+// ===== LOAD CAR =====
+el.car.innerHTML = '<option value="">Chọn xe</option>';
+Object.keys(data).forEach(c => el.car.add(new Option(c, c)));
 
-  const data = typeof FORD_DATA !== "undefined" ? FORD_DATA : {};
+// ===== CHANGE CAR =====
+el.car.onchange = () => {
+  el.version.innerHTML = '';
+  el.area.innerHTML = '';
 
-  if (!Object.keys(data).length) {
-    alert("Thiếu data.js");
-    return;
-  }
+  const car = data[el.car.value];
+  if (!car) return;
 
-  // LOAD CAR
-  el.car.innerHTML = '<option value="">Chọn xe</option>';
-  Object.keys(data).forEach(c => el.car.add(new Option(c, c)));
+  Object.keys(car.versions).forEach(v => el.version.add(new Option(v, v)));
+  Object.keys(car.areas).forEach(a => el.area.add(new Option(a, a)));
+};
 
-  // CHANGE CAR
-  el.car.onchange = () => {
-    el.version.innerHTML = '';
-    el.area.innerHTML = '';
+// ===== CALCULATE =====
+el.calc.onclick = () => {
 
-    const car = data[el.car.value];
-    if (!car) return;
+  const car = el.car.value;
+  const ver = el.version.value;
+  const area = el.area.value;
 
-    Object.keys(car.versions).forEach(v => el.version.add(new Option(v, v)));
-    Object.keys(car.areas).forEach(a => el.area.add(new Option(a, a)));
-  };
+  if (!car || !ver || !area) return alert("Chọn đủ thông tin");
 
-  // SERVICE
-  const updateService = () => {
-    el.serviceValue.textContent = format(el.serviceRange.value);
-  };
-  el.serviceRange.oninput = updateService;
-  updateService();
+  const v = data[car].versions[ver];
+  const a = data[car].areas[area];
 
-  // CALC
-  el.calc.onclick = () => {
+  const color = el.colorFee.checked ? 8000000 : 0;
+  const service = +el.serviceRange.value;
 
-    const car = el.car.value;
-    const ver = el.version.value;
-    const area = el.area.value;
+  const price = v.price + color;
+  const final = price - v.promo;
+  const tax = Math.round(price * a.tax);
 
-    if (!car || !ver || !area) return alert("Chọn đủ");
+  const total = final + tax + a.registration + 60000 + a.roadFee + a.insurance + service;
 
-    const v = data[car].versions[ver];
-    const a = data[car].areas[area];
+  // ===== UPDATE UI =====
+  el.price.textContent = format(price);
+  el.promo.textContent = format(v.promo);
+  el.final.textContent = format(final);
 
-    const color = el.colorFee.checked ? 8000000 : 0;
-    const service = +el.serviceRange.value;
+  el.tax.textContent = format(tax);
+  el.plate.textContent = format(a.registration);
+  el.reg.textContent = format(60000);
+  el.road.textContent = format(a.roadFee);
+  el.ins.textContent = format(a.insurance);
+  el.service.textContent = format(service);
 
-    const price = v.price + color;
-    const final = price - v.promo;
-    const tax = Math.round(price * a.tax);
+  el.total.textContent = format(total);
 
-    const total = final + tax + a.registration + 60000 + a.roadFee + a.insurance + service;
+  el.selectedCar.textContent = `FORD ${car} - ${ver}`;
 
-    el.price.textContent = format(price);
-    el.promo.textContent = format(v.promo);
-    el.final.textContent = format(final);
+  // ===== LOAN =====
+  updateLoan();
 
-    el.tax.textContent = format(tax);
-    el.plate.textContent = format(a.registration);
-    el.reg.textContent = format(60000);
-    el.road.textContent = format(a.roadFee);
-    el.ins.textContent = format(a.insurance);
-    el.service.textContent = format(service);
+  // ===== PDF SYNC =====
+  updatePDF(car, ver, price, v.promo, final, tax, a, service, total);
+};
 
-    el.total.textContent = format(total);
+// ===== LOAN =====
+function updateLoan() {
 
-    el.selectedCar.textContent = `FORD ${car} - ${ver}`;
-    el.result.classList.add('show');
+  const percent = +el.loanRange.value;
+  el.loanPercent.textContent = percent + '%';
 
-    updateLoan();
-  };
+  const car = el.car.value;
+  const ver = el.version.value;
+  const area = el.area.value;
+  if (!car || !ver || !area) return;
 
-  // LOAN
-  const updateLoan = () => {
+  const v = data[car].versions[ver];
+  const a = data[car].areas[area];
 
-    const percent = +el.loanRange.value;
-    el.loanPercent.textContent = percent + '%';
+  const color = el.colorFee.checked ? 8000000 : 0;
+  const service = +el.serviceRange.value;
 
-    const car = el.car.value;
-    const ver = el.version.value;
-    const area = el.area.value;
-    if (!car || !ver || !area) return;
+  const final = (v.price + color) - v.promo;
+  const loan = Math.round(final * percent / 100);
 
-    const v = data[car].versions[ver];
-    const a = data[car].areas[area];
+  const tax = Math.round((v.price + color) * a.tax);
 
-    const color = el.colorFee.checked ? 8000000 : 0;
-    const service = +el.serviceRange.value;
+  const fees = tax + a.registration + 60000 + a.roadFee + a.insurance + service;
+  const equity = final - loan;
 
-    const final = (v.price + color) - v.promo;
-    const loan = Math.round(final * percent / 100);
+  el.loanAmount.textContent = format(loan);
+  el.costs.textContent = format(fees);
+  el.equity.textContent = format(equity);
 
-    const tax = Math.round((v.price + color) * a.tax);
+  el.payment.textContent = format(fees + equity);
+}
 
-    const fees = tax + a.registration + 60000 + a.roadFee + a.insurance + service;
-    const equity = final - loan;
+el.loanRange.oninput = updateLoan;
 
-    el.loanAmount.textContent = format(loan);
-    el.costs.textContent = format(fees);
-    el.equity.textContent = format(equity);
+// ===== PDF UPDATE =====
+function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
 
-    el.totalPay.textContent = format(fees + equity);
+  $('pdfCar').textContent = `FORD ${car} - ${ver}`;
+  $('pdfPrice').textContent = format(price);
+  $('pdfPromo').textContent = format(promo);
+  $('pdfFinal').textContent = format(final);
 
-    autoScale(el.totalPay);
-  };
+  $('pdfTax').textContent = format(tax);
+  $('pdfPlate').textContent = format(a.registration);
 
-  el.loanRange.oninput = updateLoan;
+  const other = a.roadFee + a.insurance + service + 60000;
+  $('pdfOther').textContent = format(other);
 
-  // AUTO SCALE
-  function autoScale(elm) {
-    let size = 22;
-    elm.style.fontSize = size + "px";
+  $('pdfTotal').textContent = format(total);
 
-    while (elm.scrollWidth > elm.clientWidth && size > 14) {
-      size--;
-      elm.style.fontSize = size + "px";
-    }
-  }
-
-});
+  const payment = $('totalPayment').textContent;
+  $('pdfPayment').textContent = payment;
+}
