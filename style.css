@@ -1,73 +1,198 @@
-body {
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: Arial;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
   background: #f4f6f9;
 }
 
-.calc-container {
-  max-width: 600px;
+/* ===== APP WRAPPER ===== */
+.app {
+  max-width: 430px;
   margin: auto;
-  padding: 15px;
+  padding: 16px;
+  padding-bottom: 100px;
+}
+
+/* ===== HEADER ===== */
+.header {
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #888;
+}
+
+/* ===== CARD ===== */
+.card {
   background: #fff;
-  border-radius: 14px;
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
 }
 
-h2 {
-  text-align: center;
-  font-size: 18px;
-}
-
-select, button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border-radius: 10px;
-}
-
-button {
-  background: #0a1f3b;
-  color: #fff;
-  border: none;
-}
-
-.result {
-  display: none;
+/* ===== FORM ===== */
+label {
+  font-size: 13px;
   margin-top: 10px;
+  display: block;
+  color: #555;
 }
 
-.result.show {
-  display: block;
+select,
+input[type="range"] {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 12px;
+  border: none;
+  background: #f0f2f5;
+  font-size: 14px;
+}
+
+.checkbox {
+  margin-top: 10px;
+  display: flex;
+  gap: 6px;
+  font-size: 14px;
+}
+
+/* ===== BUTTON ===== */
+button {
+  width: 100%;
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  background: linear-gradient(135deg, #ff6a00, #ff2d00);
+}
+
+/* ===== RESULT ===== */
+.car-name {
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-size: 15px;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
-  padding: 6px 0;
+  padding: 8px 0;
+  font-size: 14px;
 }
 
-.highlight span:last-child {
-  color: green;
-  font-weight: bold;
+.discount {
+  color: #e53935;
 }
 
-.total-box {
-  background: orange;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  color: #fff;
+.final {
+  color: #2e7d32;
+  font-weight: 600;
 }
 
-.total-payment-box {
-  background: red;
-  color: #fff;
-  padding: 10px;
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 10px 0;
+}
+
+/* ===== TOTAL ===== */
+.total {
   margin-top: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ff6a00, #ff2d00);
+  color: #fff;
+  font-weight: 700;
   display: flex;
   justify-content: space-between;
 }
 
-#totalPayment {
+/* ===== SECTION ===== */
+.section-title {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* ===== STICKY PAYMENT ===== */
+.sticky-payment {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background: linear-gradient(135deg, #ff2d00, #ff0000);
+  color: #fff;
+
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
+}
+
+.sticky-payment .label {
+  font-size: 13px;
+}
+
+.sticky-payment .value {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* ===== PDF UI ===== */
+#pdfUI {
+  display: none;
+  background: #fff;
+}
+
+.pdf-container {
+  padding: 20px;
+  max-width: 400px;
+  margin: auto;
+  font-family: Arial;
+}
+
+.pdf-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0;
+}
+
+.pdf-total {
+  margin-top: 10px;
   font-weight: bold;
-  white-space: nowrap;
+  font-size: 16px;
+}
+
+.pdf-highlight {
+  margin-top: 12px;
+  padding: 10px;
+  background: #ff3d00;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.pdf-contact {
+  margin-top: 20px;
+  font-size: 12px;
+  text-align: center;
+  color: #555;
 }
