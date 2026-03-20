@@ -1,14 +1,27 @@
 // ===== HELPER =====
 const $ = id => document.getElementById(id);
 
-const format = n => (n || 0).toLocaleString('vi-VN') + ' đ';
+const format = n => (n || 0).toLocaleString('vi-VN');
+
+// ===== ANIMATE =====
+function animateValue(el, start, end, duration = 500) {
+  let startTime = null;
+
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    const value = Math.floor(progress * (end - start) + start);
+
+    el.textContent = format(value);
+
+    if (progress < 1) requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+}
 
 // ===== DATA =====
 const data = typeof FORD_DATA !== "undefined" ? FORD_DATA : {};
-
-if (!Object.keys(data).length) {
-  alert("Thiếu data.js");
-}
 
 // ===== ELEMENT =====
 const el = {
@@ -32,7 +45,6 @@ const el = {
   loanRange: $('loanRange'),
   loanPercent: $('loanPercent'),
   loanAmount: $('loanAmount'),
-
   costs: $('costs'),
   equity: $('equity'),
   payment: $('totalPayment'),
@@ -42,7 +54,7 @@ const el = {
   selectedCar: $('selectedCar')
 };
 
-// ===== LOAD CAR =====
+// ===== LOAD =====
 el.car.innerHTML = '<option value="">Chọn xe</option>';
 Object.keys(data).forEach(c => el.car.add(new Option(c, c)));
 
@@ -60,6 +72,12 @@ el.car.onchange = () => {
 
 // ===== CALCULATE =====
 el.calc.onclick = () => {
+
+  // animation effect
+  document.querySelectorAll('.card').forEach(c => {
+    c.classList.add('active');
+    setTimeout(() => c.classList.remove('active'), 300);
+  });
 
   const car = el.car.value;
   const ver = el.version.value;
@@ -79,7 +97,7 @@ el.calc.onclick = () => {
 
   const total = final + tax + a.registration + 60000 + a.roadFee + a.insurance + service;
 
-  // ===== UPDATE UI =====
+  // UI
   el.price.textContent = format(price);
   el.promo.textContent = format(v.promo);
   el.final.textContent = format(final);
@@ -91,14 +109,11 @@ el.calc.onclick = () => {
   el.ins.textContent = format(a.insurance);
   el.service.textContent = format(service);
 
-  el.total.textContent = format(total);
+  animateValue(el.total, 0, total);
 
   el.selectedCar.textContent = `FORD ${car} - ${ver}`;
 
-  // ===== LOAN =====
   updateLoan();
-
-  // ===== PDF SYNC =====
   updatePDF(car, ver, price, v.promo, final, tax, a, service, total);
 };
 
@@ -127,16 +142,15 @@ function updateLoan() {
   const fees = tax + a.registration + 60000 + a.roadFee + a.insurance + service;
   const equity = final - loan;
 
-  el.loanAmount.textContent = format(loan);
-  el.costs.textContent = format(fees);
-  el.equity.textContent = format(equity);
-
-  el.payment.textContent = format(fees + equity);
+  animateValue(el.loanAmount, 0, loan);
+  animateValue(el.costs, 0, fees);
+  animateValue(el.equity, 0, equity);
+  animateValue(el.payment, 0, fees + equity);
 }
 
 el.loanRange.oninput = updateLoan;
 
-// ===== PDF UPDATE =====
+// ===== PDF =====
 function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
 
   $('pdfCar').textContent = `FORD ${car} - ${ver}`;
@@ -151,7 +165,32 @@ function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
   $('pdfOther').textContent = format(other);
 
   $('pdfTotal').textContent = format(total);
-
-  const payment = $('totalPayment').textContent;
-  $('pdfPayment').textContent = payment;
+  $('pdfPayment').textContent = $('totalPayment').textContent;
 }
+
+// ===== EXPORT PDF =====
+$('pdfBtn').onclick = async () => {
+
+  const app = $('appUI');
+  const pdf = $('pdfUI');
+
+  app.style.display = 'none';
+  pdf.style.display = 'block';
+
+  await new Promise(r => setTimeout(r, 300));
+
+  const canvas = await html2canvas(pdf);
+  const img = canvas.toDataURL('image/png');
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+
+  const width = 210;
+  const height = canvas.height * width / canvas.width;
+
+  doc.addImage(img, 'PNG', 0, 0, width, height);
+  doc.save('ford-bao-gia.pdf');
+
+  pdf.style.display = 'none';
+  app.style.display = 'block';
+};
