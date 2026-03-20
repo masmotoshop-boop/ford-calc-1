@@ -3,87 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a1f3b">
-
-<title>Ford Calculator</title>
+<title>Ford Calculator PRO</title>
 
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 </head>
+
 <body>
 
-<div class="calc-container">
+<!-- ===== APP UI ===== -->
+<div id="appUI" class="app">
 
-  <h2>TEST GPT</h2>
-
-  <label>Dòng xe</label>
-  <select id="car"></select>
-
-  <label>Phiên bản</label>
-  <select id="version"></select>
-
-  <div id="promoBadge" class="badge"></div>
-
-  <label>Khu vực đăng ký</label>
-  <select id="area"></select>
-
-  <label>Phí dịch vụ đăng ký</label>
-  <input type="range" id="serviceRange" min="0" max="10000000" step="500000" value="3000000">
-  <div id="serviceValue"></div>
-
-  <div class="color-option">
-    <label>
-      <input type="checkbox" id="colorFee">
-      Chênh lệch màu (+8.000.000 đ)
-    </label>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="title">🚗 Báo giá lăn bánh</div>
+    <div class="subtitle">Ford Việt Nam</div>
   </div>
 
-  <button id="calcBtn">Tính giá lăn bánh</button>
-  <button id="exportPDF">Xuất PDF</button>
+  <!-- FORM -->
+  <div class="card">
 
-  <div id="captureArea">
+    <label>Dòng xe</label>
+    <select id="car"></select>
 
-    <div class="result">
-      <div id="selectedCar"></div>
+    <label>Phiên bản</label>
+    <select id="version"></select>
 
-      <div class="row"><span>Giá</span><span id="price"></span></div>
-      <div class="row"><span>KM</span><span id="promo"></span></div>
-      <div class="row highlight"><span>Sau giảm</span><span id="finalPrice"></span></div>
+    <label>Khu vực</label>
+    <select id="area"></select>
 
-      <div class="row"><span>Thuế</span><span id="tax"></span></div>
-      <div class="row"><span>Biển</span><span id="plate"></span></div>
-      <div class="row"><span>Đăng kiểm</span><span id="registration"></span></div>
-      <div class="row"><span>Đường bộ</span><span id="roadFee"></span></div>
-      <div class="row"><span>Bảo hiểm</span><span id="insurance"></span></div>
-      <div class="row"><span>Dịch vụ</span><span id="serviceFee"></span></div>
+    <label>Phí dịch vụ</label>
+    <input type="range" id="serviceRange">
 
-      <div class="total-box">
-        <span>TỔNG</span>
-        <span id="total"></span>
-      </div>
+    <div class="checkbox">
+      <input type="checkbox" id="colorFee">
+      <span>Chênh lệch màu (+8.000.000đ)</span>
     </div>
 
-    <div class="finance-section">
-      <input type="range" id="loanRange" min="0" max="80" step="5">
+    <button id="calcBtn">TÍNH GIÁ</button>
 
-      <div class="row"><span>% vay</span><span id="loanPercent"></span></div>
-      <div class="row"><span>Tiền vay</span><span id="loanAmount"></span></div>
-      <div class="row"><span>Chi phí</span><span id="costs"></span></div>
-      <div class="row"><span>Vốn</span><span id="equity"></span></div>
+  </div>
 
-      <div class="total-payment-box">
-        <span>TRẢ TRƯỚC</span>
-        <span id="totalPayment"></span>
-      </div>
+  <!-- RESULT -->
+  <div class="card result">
+
+    <div class="car-name" id="selectedCar">---</div>
+
+    <div class="row">
+      <span>Giá niêm yết</span>
+      <span id="price"></span>
+    </div>
+
+    <div class="row discount">
+      <span>Khuyến mãi</span>
+      <span id="promo"></span>
+    </div>
+
+    <div class="row final">
+      <span>Giá sau giảm</span>
+      <span id="finalPrice"></span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row"><span>Thuế trước bạ</span><span id="tax"></span></div>
+    <div class="row"><span>Biển số</span><span id="plate"></span></div>
+    <div class="row"><span>Đăng kiểm</span><span id="registration"></span></div>
+    <div class="row"><span>Đường bộ</span><span id="roadFee"></span></div>
+    <div class="row"><span>Bảo hiểm</span><span id="insurance"></span></div>
+    <div class="row"><span>Dịch vụ</span><span id="serviceFee"></span></div>
+
+    <div class="total">
+      <span>TỔNG LĂN BÁNH</span>
+      <span id="total"></span>
+    </div>
+
+  </div>
+
+  <!-- FINANCE -->
+  <div class="card">
+
+    <div class="section-title">VAY & THANH TOÁN</div>
+
+    <input type="range" id="loanRange">
+
+    <div class="row"><span>Tỷ lệ vay</span><span id="loanPercent"></span></div>
+    <div class="row"><span>Tiền vay</span><span id="loanAmount"></span></div>
+    <div class="row"><span>Chi phí</span><span id="costs"></span></div>
+    <div class="row"><span>Vốn</span><span id="equity"></span></div>
+
+  </div>
+
+</div>
+
+<!-- ===== STICKY TRẢ TRƯỚC ===== -->
+<div class="sticky-payment">
+  <div>
+    <div class="label">TRẢ TRƯỚC</div>
+    <div id="totalPayment" class="value">0 đ</div>
+  </div>
+</div>
+
+<!-- ===== PDF UI ===== -->
+<div id="pdfUI">
+
+  <div class="pdf-container">
+
+    <h2 id="pdfCar">FORD</h2>
+
+    <div class="pdf-row"><span>Giá</span><span id="pdfPrice"></span></div>
+    <div class="pdf-row"><span>Giảm</span><span id="pdfPromo"></span></div>
+    <div class="pdf-row highlight"><span>Sau giảm</span><span id="pdfFinal"></span></div>
+
+    <hr>
+
+    <div class="pdf-row"><span>Thuế</span><span id="pdfTax"></span></div>
+    <div class="pdf-row"><span>Biển</span><span id="pdfPlate"></span></div>
+    <div class="pdf-row"><span>Chi phí khác</span><span id="pdfOther"></span></div>
+
+    <div class="pdf-total">
+      <span>TỔNG</span>
+      <span id="pdfTotal"></span>
+    </div>
+
+    <div class="pdf-highlight">
+      TRẢ TRƯỚC: <span id="pdfPayment"></span>
+    </div>
+
+    <div class="pdf-contact">
+      📞 Liên hệ: 
+      🚗 Ford Việt Nam
     </div>
 
   </div>
 
 </div>
 
-<script src="data.js" defer></script>
-<script src="app.js" defer></script>
+<!-- SCRIPT -->
+<script src="data.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
