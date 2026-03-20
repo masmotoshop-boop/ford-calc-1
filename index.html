@@ -3,174 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ford Calculator PRO</title>
+<title>Ford Calculator</title>
 
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 </head>
+
 <body>
 
-<div id="appUI" class="app">
+<!-- ===== APP ===== -->
+<div id="appUI">
 
-  <div class="header">
-    <div class="title">🚗 Báo giá lăn bánh</div>
-    <div class="subtitle">Ford Việt Nam</div>
-  </div>
+  <h2 id="selectedCar">CHỌN XE</h2>
+
+  <select id="car"></select>
+  <select id="version"></select>
+  <select id="area"></select>
+
+  <input type="range" id="serviceRange" min="0" max="10000000" step="500000" value="3000000">
+
+  <label>
+    <input type="checkbox" id="colorFee"> Chênh lệch màu
+  </label>
+
+  <button id="calcBtn">Tính giá</button>
+  <button id="pdfBtn">📲 Gửi báo giá</button>
+
+  <!-- ===== KẾT QUẢ ===== -->
 
   <div class="card">
 
-    <label>Dòng xe</label>
-    <select id="car"></select>
+    <div>Giá niêm yết: <span id="price"></span></div>
+    <div>Khuyến mãi: <span id="promo"></span></div>
 
-    <label>Phiên bản</label>
-    <select id="version"></select>
-
-    <label>Khu vực</label>
-    <select id="area"></select>
-
-    <label>Phí dịch vụ</label>
-    <input type="range" id="serviceRange">
-
-    <div class="checkbox">
-      <input type="checkbox" id="colorFee">
-      <span>Chênh lệch màu (+8.000.000)</span>
-    </div>
-
-    <button id="calcBtn">TÍNH GIÁ</button>
-    <button id="pdfBtn" class="btn-dark">XUẤT PDF</button>
-
-  </div>
-
-  <div class="card result">
-
-    <div class="car-name" id="selectedCar">---</div>
-
-    <div class="row"><span>Giá niêm yết</span><span id="price"></span></div>
-    <div class="row discount"><span>Khuyến mãi</span><span id="promo"></span></div>
-    <div class="row final"><span>Sau giảm</span><span id="finalPrice"></span></div>
-
-    <div class="divider"></div>
-
-    <div class="row"><span>Thuế</span><span id="tax"></span></div>
-    <div class="row"><span>Biển</span><span id="plate"></span></div>
-    <div class="row"><span>Đăng kiểm</span><span id="registration"></span></div>
-    <div class="row"><span>Đường bộ</span><span id="roadFee"></span></div>
-    <div class="row"><span>Bảo hiểm</span><span id="insurance"></span></div>
-    <div class="row"><span>Dịch vụ</span><span id="serviceFee"></span></div>
-
-    <div class="total">
-      <span>TỔNG LĂN BÁNH</span>
-      <span id="total"></span>
+    <div class="highlight-box final-box">
+      <div class="highlight-label">GIÁ SAU GIẢM</div>
+      <div class="highlight-value" id="finalPrice"></div>
     </div>
 
   </div>
 
   <div class="card">
 
-    <div class="section-title">VAY & THANH TOÁN</div>
+    <h3>CHI PHÍ LĂN BÁNH</h3>
 
-    <input type="range" id="loanRange">
+    <div>Thuế: <span id="tax"></span></div>
+    <div>Biển: <span id="plate"></span></div>
+    <div>Đăng kiểm: <span id="registration"></span></div>
+    <div>Đường bộ: <span id="roadFee"></span></div>
+    <div>Bảo hiểm: <span id="insurance"></span></div>
+    <div>Dịch vụ: <span id="serviceFee"></span></div>
 
-    <div class="row"><span>Tỷ lệ vay</span><span id="loanPercent"></span></div>
-    <div class="row"><span>Tiền vay</span><span id="loanAmount"></span></div>
-    <div class="row"><span>Chi phí</span><span id="costs"></span></div>
-    <div class="row"><span>Vốn</span><span id="equity"></span></div>
-
-    <!-- 🔥 TRẢ TRƯỚC -->
-    <div class="payment-box">
-      <div>TRẢ TRƯỚC</div>
-      <div id="totalPayment">0</div>
+    <div class="highlight-box total-box">
+      <div class="highlight-label">TỔNG LĂN BÁNH</div>
+      <div class="highlight-value" id="total"></div>
     </div>
 
+  </div>
+
+  <div class="card">
+
+    <h3>PHƯƠNG THỨC THANH TOÁN</h3>
+
+    <input type="range" id="loanRange" min="0" max="100" value="50">
+
+    <div>% vay: <span id="loanPercent"></span></div>
+    <div>Tiền vay: <span id="loanAmount"></span></div>
+    <div>Chi phí: <span id="costs"></span></div>
+    <div>Vốn: <span id="equity"></span></div>
+
+    <div class="highlight-box pay-box">
+      <div class="highlight-label">TRẢ TRƯỚC</div>
+      <div class="highlight-value" id="totalPayment"></div>
+    </div>
+
+  </div>
+
+  <!-- 🎁 QUÀ -->
+  <div class="card">
+    <h3>QUÀ TẶNG</h3>
+    <div id="giftList" class="gift-grid"></div>
   </div>
 
 </div>
 
-<!-- PDF -->
-<div id="pdfUI">
-  <div class="pdf-container">
+<!-- ===== PDF ===== -->
+<div id="pdfUI" style="display:none">
 
-    <!-- HEADER -->
-    <div class="pdf-header">
-      <div class="pdf-title">BÁO GIÁ XE FORD</div>
-      <div class="pdf-car" id="pdfCar"></div>
-      <div class="pdf-date" id="pdfDate"></div>
-    </div>
+  <button id="backBtn" class="back-btn">← Quay lại</button>
 
-    <!-- GIÁ XE -->
-<div class="pdf-card">
+  <h2 id="pdfCar"></h2>
+  <div id="pdfDate"></div>
 
-  <div class="pdf-row">
-    <span>Giá niêm yết</span>
-    <span id="pdfPrice"></span>
-  </div>
+  <hr>
 
-  <div class="pdf-row discount">
-    <span>Khuyến mãi</span>
-    <span id="pdfPromo"></span>
-  </div>
+  <div>Giá: <span id="pdfPrice"></span></div>
+  <div>Giảm: <span id="pdfPromo"></span></div>
+  <div>Final: <span id="pdfFinal"></span></div>
 
-  <!-- 🔥 CHỐT SALE -->
-  <div class="pdf-big-price">
-    <div>GIÁ SAU GIẢM</div>
-    <div id="pdfFinal"></div>
-  </div>
+  <hr>
 
-</div>
+  <div>Thuế: <span id="pdfTax"></span></div>
+  <div>Biển: <span id="pdfPlate"></span></div>
+  <div>Đăng kiểm: <span id="pdfReg"></span></div>
+  <div>Đường bộ: <span id="pdfRoad"></span></div>
+  <div>Bảo hiểm: <span id="pdfIns"></span></div>
+  <div>Dịch vụ: <span id="pdfService"></span></div>
 
-    <!-- CHI PHÍ -->
-    <div class="pdf-card">
-      <div class="pdf-section">CHI PHÍ LĂN BÁNH</div>
+  <h3>Tổng: <span id="pdfTotal"></span></h3>
 
-      <div class="pdf-row"><span>Thuế trước bạ</span><span id="pdfTax"></span></div>
-      <div class="pdf-row"><span>Biển số</span><span id="pdfPlate"></span></div>
-      <div class="pdf-row"><span>Đăng kiểm</span><span id="pdfReg"></span></div>
-      <div class="pdf-row"><span>Đường bộ</span><span id="pdfRoad"></span></div>
-      <div class="pdf-row"><span>Bảo hiểm TNDS</span><span id="pdfIns"></span></div>
-      <div class="pdf-row"><span>Dịch vụ</span><span id="pdfService"></span></div>
-    </div>
+  <hr>
 
-    <!-- TỔNG -->
-    <div class="pdf-total">
-      TỔNG LĂN BÁNH: <span id="pdfTotal"></span>
-    </div>
+  <div>% vay: <span id="pdfPercent"></span></div>
+  <div>Vay: <span id="pdfLoan"></span></div>
+  <div>Vốn: <span id="pdfOwn"></span></div>
+  <div>Chi phí: <span id="pdfCost"></span></div>
+  <div>Trả trước: <span id="pdfPay"></span></div>
 
-    <!-- VAY -->
-   <div class="pdf-card">
-  <div class="pdf-section">PHƯƠNG THỨC THANH TOÁN</div>
+  <hr>
 
-  <div class="pdf-row"><span>% vay</span><span id="pdfPercent"></span></div>
-  <div class="pdf-row"><span>Tiền vay</span><span id="pdfLoan"></span></div>
-  <div class="pdf-row"><span>Vốn</span><span id="pdfOwn"></span></div>
-  <div class="pdf-row"><span>Chi phí</span><span id="pdfCost"></span></div>
-</div>
+  <div id="pdfGifts"></div>
 
-    <!-- TRẢ TRƯỚC -->
-    <div class="pdf-pay">
-      TRẢ TRƯỚC: <span id="pdfPay"></span>
-    </div>
-
-    <!-- QUÀ -->
-    <div class="pdf-card">
-      <div class="pdf-section">QUÀ TẶNG</div>
-      <div class="gift-grid" id="giftList">
-</div>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="pdf-footer">
-      Hotline: 09xxx.xxx.xxx
-    </div>
-
-  </div>
 </div>
 
 <script src="data.js"></script>
 <script src="app.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 </body>
 </html>
