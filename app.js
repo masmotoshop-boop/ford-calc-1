@@ -165,6 +165,7 @@ function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
   $('pdfLoan').textContent = el.loanAmount.textContent;
   $('pdfOwn').textContent = el.equity.textContent;
   $('pdfPay').textContent = el.payment.textContent;
+  $('pdfCost').textContent = el.costs.textContent;
 }
 
 // ===== EXPORT PDF =====
