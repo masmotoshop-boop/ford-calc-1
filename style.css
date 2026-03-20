@@ -206,3 +206,103 @@ button:active {
   text-align: center;
   color: #555;
 }
+/* ===== PDF BOLD SALES ===== */
+
+.pdf-container {
+  font-family: Arial;
+  padding: 16px;
+  max-width: 420px;
+  margin: auto;
+  background: #fff;
+}
+
+/* HEADER */
+.pdf-header {
+  background: linear-gradient(135deg, #ff6a00, #ff2d00);
+  color: #fff;
+  padding: 14px;
+  border-radius: 14px;
+  margin-bottom: 14px;
+}
+
+.pdf-title {
+  font-size: 14px;
+}
+
+.pdf-car {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.pdf-date {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+/* CARD */
+.pdf-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #eee;
+}
+
+.pdf-section {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+/* ROW */
+.pdf-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+/* GREEN */
+.pdf-highlight-green {
+  margin-top: 8px;
+  background: #e8f5e9;
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+/* TOTAL */
+.pdf-total {
+  background: linear-gradient(135deg, #ff6a00, #ff2d00);
+  color: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* PAY */
+.pdf-pay {
+  background: #ff0000;
+  color: #fff;
+  padding: 14px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+/* GIFT */
+.pdf-gift {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* FOOTER */
+.pdf-footer {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  margin-top: 10px;
+}
