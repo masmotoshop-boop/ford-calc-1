@@ -161,12 +161,57 @@ function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
 
   $('pdfTotal').textContent = format(total);
 
-  $('pdfPercent').textContent = el.loanPercent.textContent;
-  $('pdfLoan').textContent = el.loanAmount.textContent;
-  $('pdfOwn').textContent = el.equity.textContent;
-  $('pdfPay').textContent = el.payment.textContent;
-  $('pdfCost').textContent = el.costs.textContent;
+  // 🔥 FIX: tính trực tiếp
+  const percent = +el.loanRange.value;
+  const loan = Math.round(final * percent / 100);
+  const fees = tax + a.registration + 60000 + a.roadFee + a.insurance + service;
+  const equity = final - loan;
+  const pay = equity + fees;
+
+  $('pdfPercent').textContent = percent + '%';
+  $('pdfLoan').textContent = format(loan);
+  $('pdfOwn').textContent = format(equity);
+  $('pdfCost').textContent = format(fees);
+  $('pdfPay').textContent = format(pay);
 }
+
+// ===== QUÀ TẶNG =====
+let gifts = [
+  "Bảo hiểm thân xe",
+  "Camera hành trình",
+  "Phim cách nhiệt",
+  "Thảm sàn",
+  "Gối cổ",
+  "Bọc vô lăng",
+  "Dán kính",
+  "Túi cứu hộ",
+  "Bình xịt lốp",
+  "Bảo dưỡng"
+];
+
+function renderGifts() {
+  const box = $('giftList');
+  if (!box) return;
+
+  box.innerHTML = '';
+
+  gifts.forEach((g, i) => {
+    box.innerHTML += `
+      <div class="gift-item" onclick="editGift(${i})">
+        ✔ ${g}
+      </div>
+    `;
+  });
+}
+
+// 🔥 BONUS: sửa trực tiếp
+window.editGift = function(i){
+  const newGift = prompt("Sửa quà", gifts[i]);
+  if(newGift) gifts[i] = newGift;
+  renderGifts();
+}
+
+renderGifts();
 
 // ===== EXPORT + SHARE PDF =====
 $('pdfBtn').onclick = async () => {
@@ -179,7 +224,6 @@ $('pdfBtn').onclick = async () => {
   app.style.display = 'none';
   pdf.style.display = 'block';
 
-  // 🔥 CHỜ RENDER XONG (FIX mất nội dung)
   await new Promise(resolve => {
     requestAnimationFrame(() => {
       setTimeout(resolve, 500);
@@ -190,7 +234,6 @@ $('pdfBtn').onclick = async () => {
     scale: 2
   });
 
-  // 🔥 giảm dung lượng
   const img = canvas.toDataURL('image/jpeg', 0.7);
 
   const { jsPDF } = window.jspdf;
@@ -202,12 +245,10 @@ $('pdfBtn').onclick = async () => {
   doc.addImage(img, 'JPEG', 0, 0, width, height);
 
   const blob = doc.output('blob');
-
   const file = new File([blob], "bao-gia-xe-ford.pdf", {
     type: "application/pdf"
   });
 
-  // 🔥 SHARE (ZALO, iPhone...)
   if (navigator.canShare && navigator.canShare({ files: [file] })) {
     await navigator.share({
       title: "Báo giá xe Ford",
@@ -217,7 +258,13 @@ $('pdfBtn').onclick = async () => {
   } else {
     doc.save('bao-gia-xe-ford.pdf');
   }
-
-  pdf.style.display = 'none';
-  app.style.display = 'block';
 };
+
+// ===== BACK BUTTON =====
+const backBtn = $('backBtn');
+if(backBtn){
+  backBtn.onclick = () => {
+    $('pdfUI').style.display = 'none';
+    $('appUI').style.display = 'block';
+  };
+}
