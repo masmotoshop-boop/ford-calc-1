@@ -89,32 +89,73 @@
 
 <!-- PDF -->
 <div id="pdfUI">
-
   <div class="pdf-container">
 
-    <h2 id="pdfCar">FORD</h2>
-
-    <div class="pdf-row"><span>Giá</span><span id="pdfPrice"></span></div>
-    <div class="pdf-row"><span>Giảm</span><span id="pdfPromo"></span></div>
-    <div class="pdf-row highlight"><span>Sau giảm</span><span id="pdfFinal"></span></div>
-
-    <hr>
-
-    <div class="pdf-row"><span>Thuế</span><span id="pdfTax"></span></div>
-    <div class="pdf-row"><span>Biển</span><span id="pdfPlate"></span></div>
-    <div class="pdf-row"><span>Chi phí khác</span><span id="pdfOther"></span></div>
-
-    <div class="pdf-total">
-      <span>TỔNG</span>
-      <span id="pdfTotal"></span>
+    <!-- HEADER -->
+    <div class="pdf-header">
+      <div class="pdf-title">BÁO GIÁ XE FORD</div>
+      <div class="pdf-car" id="pdfCar"></div>
+      <div class="pdf-date" id="pdfDate"></div>
     </div>
 
-    <div class="pdf-highlight">
-      TRẢ TRƯỚC: <span id="pdfPayment"></span>
+    <!-- GIÁ XE -->
+    <div class="pdf-card">
+      <div class="pdf-row"><span>Giá niêm yết</span><span id="pdfPrice"></span></div>
+      <div class="pdf-row"><span>Khuyến mãi</span><span id="pdfPromo"></span></div>
+
+      <div class="pdf-highlight-green">
+        Giá sau giảm: <span id="pdfFinal"></span>
+      </div>
+    </div>
+
+    <!-- CHI PHÍ -->
+    <div class="pdf-card">
+      <div class="pdf-section">CHI PHÍ LĂN BÁNH</div>
+
+      <div class="pdf-row"><span>Thuế trước bạ</span><span id="pdfTax"></span></div>
+      <div class="pdf-row"><span>Biển số</span><span id="pdfPlate"></span></div>
+      <div class="pdf-row"><span>Đăng kiểm</span><span id="pdfReg"></span></div>
+      <div class="pdf-row"><span>Đường bộ</span><span id="pdfRoad"></span></div>
+      <div class="pdf-row"><span>Bảo hiểm TNDS</span><span id="pdfIns"></span></div>
+      <div class="pdf-row"><span>Dịch vụ</span><span id="pdfService"></span></div>
+    </div>
+
+    <!-- TỔNG -->
+    <div class="pdf-total">
+      TỔNG LĂN BÁNH: <span id="pdfTotal"></span>
+    </div>
+
+    <!-- VAY -->
+    <div class="pdf-card">
+      <div class="pdf-section">PHƯƠNG THỨC THANH TOÁN</div>
+
+      <div class="pdf-row"><span>% vay</span><span id="pdfPercent"></span></div>
+      <div class="pdf-row"><span>Tiền vay</span><span id="pdfLoan"></span></div>
+      <div class="pdf-row"><span>Vốn</span><span id="pdfOwn"></span></div>
+    </div>
+
+    <!-- TRẢ TRƯỚC -->
+    <div class="pdf-pay">
+      TRẢ TRƯỚC: <span id="pdfPay"></span>
+    </div>
+
+    <!-- QUÀ -->
+    <div class="pdf-card">
+      <div class="pdf-section">QUÀ TẶNG</div>
+      <div class="pdf-gift">
+        ✔ Bảo hiểm thân xe<br>
+        ✔ Camera hành trình<br>
+        ✔ Phim cách nhiệt<br>
+        ✔ Thảm sàn<br>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="pdf-footer">
+      Hotline: 09xxx.xxx.xxx
     </div>
 
   </div>
-
 </div>
 
 <script src="data.js"></script>
