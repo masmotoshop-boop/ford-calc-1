@@ -1,6 +1,5 @@
 // ===== HELPER =====
 const $ = id => document.getElementById(id);
-
 const format = n => (n || 0).toLocaleString('vi-VN');
 
 // ===== ANIMATE =====
@@ -11,9 +10,7 @@ function animateValue(el, start, end, duration = 500) {
     if (!startTime) startTime = timestamp;
     const progress = Math.min((timestamp - startTime) / duration, 1);
     const value = Math.floor(progress * (end - start) + start);
-
     el.textContent = format(value);
-
     if (progress < 1) requestAnimationFrame(step);
   }
 
@@ -73,7 +70,6 @@ el.car.onchange = () => {
 // ===== CALCULATE =====
 el.calc.onclick = () => {
 
-  // animation effect
   document.querySelectorAll('.card').forEach(c => {
     c.classList.add('active');
     setTimeout(() => c.classList.remove('active'), 300);
@@ -97,7 +93,6 @@ el.calc.onclick = () => {
 
   const total = final + tax + a.registration + 60000 + a.roadFee + a.insurance + service;
 
-  // UI
   el.price.textContent = format(price);
   el.promo.textContent = format(v.promo);
   el.final.textContent = format(final);
@@ -136,7 +131,6 @@ function updateLoan() {
 
   const final = (v.price + color) - v.promo;
   const loan = Math.round(final * percent / 100);
-
   const tax = Math.round((v.price + color) * a.tax);
 
   const fees = tax + a.registration + 60000 + a.roadFee + a.insurance + service;
@@ -150,7 +144,7 @@ function updateLoan() {
 
 el.loanRange.oninput = updateLoan;
 
-// ===== PDF =====
+// ===== PDF DATA =====
 function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
 
   $('pdfCar').textContent = `FORD ${car} - ${ver}`;
@@ -160,16 +154,24 @@ function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
 
   $('pdfTax').textContent = format(tax);
   $('pdfPlate').textContent = format(a.registration);
-
-  const other = a.roadFee + a.insurance + service + 60000;
-  $('pdfOther').textContent = format(other);
+  $('pdfReg').textContent = format(60000);
+  $('pdfRoad').textContent = format(a.roadFee);
+  $('pdfIns').textContent = format(a.insurance);
+  $('pdfService').textContent = format(service);
 
   $('pdfTotal').textContent = format(total);
-  $('pdfPayment').textContent = $('totalPayment').textContent;
+
+  $('pdfPercent').textContent = el.loanPercent.textContent;
+  $('pdfLoan').textContent = el.loanAmount.textContent;
+  $('pdfOwn').textContent = el.equity.textContent;
+  $('pdfPay').textContent = el.payment.textContent;
 }
 
 // ===== EXPORT PDF =====
 $('pdfBtn').onclick = async () => {
+
+  // 👉 ngày dạng để trống điền tay
+  $('pdfDate').textContent = "Ngày: .... / .... / 2026";
 
   const app = $('appUI');
   const pdf = $('pdfUI');
