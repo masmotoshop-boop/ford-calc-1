@@ -168,10 +168,9 @@ function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
   $('pdfCost').textContent = el.costs.textContent;
 }
 
-// ===== EXPORT PDF =====
+// ===== EXPORT + SHARE PDF =====
 $('pdfBtn').onclick = async () => {
 
-  // 👉 ngày dạng để trống điền tay
   $('pdfDate').textContent = "Ngày: .... / .... / 2026";
 
   const app = $('appUI');
@@ -180,10 +179,19 @@ $('pdfBtn').onclick = async () => {
   app.style.display = 'none';
   pdf.style.display = 'block';
 
-  await new Promise(r => setTimeout(r, 300));
+  // 🔥 CHỜ RENDER XONG (FIX mất nội dung)
+  await new Promise(resolve => {
+    requestAnimationFrame(() => {
+      setTimeout(resolve, 500);
+    });
+  });
 
-  const canvas = await html2canvas(pdf);
-  const img = canvas.toDataURL('image/png');
+  const canvas = await html2canvas(pdf, {
+    scale: 2
+  });
+
+  // 🔥 giảm dung lượng
+  const img = canvas.toDataURL('image/jpeg', 0.7);
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF('p', 'mm', 'a4');
@@ -191,8 +199,24 @@ $('pdfBtn').onclick = async () => {
   const width = 210;
   const height = canvas.height * width / canvas.width;
 
-  doc.addImage(img, 'PNG', 0, 0, width, height);
-  doc.save('ford-bao-gia.pdf');
+  doc.addImage(img, 'JPEG', 0, 0, width, height);
+
+  const blob = doc.output('blob');
+
+  const file = new File([blob], "bao-gia-xe-ford.pdf", {
+    type: "application/pdf"
+  });
+
+  // 🔥 SHARE (ZALO, iPhone...)
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    await navigator.share({
+      title: "Báo giá xe Ford",
+      text: "Chi tiết giá xe",
+      files: [file]
+    });
+  } else {
+    doc.save('bao-gia-xe-ford.pdf');
+  }
 
   pdf.style.display = 'none';
   app.style.display = 'block';
