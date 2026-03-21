@@ -38,7 +38,6 @@ const el = {
   reg: $('registration'),
   road: $('roadFee'),
   ins: $('insurance'),
-  service: $('serviceFee'),
   total: $('total'),
 
   loanRange: $('loanRange'),
