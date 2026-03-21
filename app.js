@@ -347,12 +347,16 @@ $('pdfBtn').onclick = async () => {
     }
 
   } catch (e) {
-    console.error(e);
+  console.log("Share cancelled hoặc lỗi:", e);
 
-    // 👉 fallback UI
-    $('appUI').style.display = 'block';
-    $('pdfUI').style.display = 'none';
+  // 👉 nếu user cancel → KHÔNG làm gì
+  if (e.name === 'AbortError') {
+    return;
+  }
 
+  // 👉 chỉ fallback khi lỗi thật
+  $('appUI').style.display = 'block';
+  $('pdfUI').style.display = 'none';
   } finally {
     window.__EXPORTING_PDF__ = false;
   }
