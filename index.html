@@ -68,7 +68,14 @@
 
     <div class="section-title">MUA QUA BANK</div>
 
-    <input type="range" id="loanRange">
+    <input 
+  type="range" 
+  id="loanRange"
+  min="30"
+  max="90"
+  step="5"
+  value="50"
+>
 
     <div class="row"><span>Tỷ lệ vay</span><span id="loanPercent"></span></div>
     <div class="row"><span>Tiền vay</span><span id="loanAmount"></span></div>
@@ -80,9 +87,12 @@
       <div>TRẢ TRƯỚC</div>
       <div id="totalPayment">0</div>
     </div>
-
   </div>
+    <div class="card">
+  <div class="section-title">QUÀ TẶNG</div>
 
+  <div class="gift-grid" id="giftListApp"></div>
+</div>
 </div>
 
 <!-- PDF -->
@@ -153,7 +163,7 @@
   <div class="pdf-section">QUÀ TẶNG</div>
 
   <div class="pdf-gift">
-    <div class="gift-grid" id="giftList"></div>
+    <div class="gift-grid" id="giftListPDF"></div>
   </div>
 </div>
 
