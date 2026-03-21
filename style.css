@@ -365,3 +365,19 @@ button:active {
 .pdf-pay span {
   white-space: nowrap;
 }
+/* Tổng lăn bánh */
+.pdf-row-total {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #ddd;
+  font-weight: 700;
+}
+
+/* Trả trước */
+.pdf-row-pay {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #ddd;
+  font-weight: 700;
+  color: #9E2C21; /* đỏ nhẹ */
+}
