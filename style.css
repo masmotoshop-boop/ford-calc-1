@@ -280,6 +280,7 @@ button:active {
 }
 
 /* GREEN */
+/* GREEN */
 .pdf-highlight-green {
   margin-top: 6px;
   padding: 6px 10px;
@@ -287,20 +288,16 @@ button:active {
   border-radius: 8px;
   font-weight: bold;
   font-size: 13px;
+}
 
+/* FIX CHÍNH NẰM Ở ĐÂY */
+.pdf-highlight-green .pdf-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
 
-/* nội dung bên trong */
-.pdf-highlight-green div {
-  white-space: nowrap;
-}
-
-/* số tiền bên phải */
-.pdf-highlight-green div:last-child {
-  font-weight: 700;
+  margin: 0;          /* bỏ khoảng cách dư */
+  font-size: 13px;
 }
 
 /* TOTAL */
