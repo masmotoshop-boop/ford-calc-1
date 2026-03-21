@@ -190,11 +190,11 @@ function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
 
   $('pdfTotal').textContent = format(total);
 
-  const percent = Number(el.loanRange.value) || 0;
-  const loan = Math.round(final * percent / 100);
-  const fees = tax + a.registration + 60000 + Number(el.serviceFee.value);
-  const equity = final - loan;
-  const pay = equity + fees;
+  const percent = el.loanPercent.textContent;
+const loan = el.loanAmount.textContent;
+const equity = el.equity.textContent;
+const fees = el.costs.textContent;
+const pay = el.payment.textContent;
 
   $('pdfPercent').textContent = percent + '%';
   $('pdfLoan').textContent = format(loan);
