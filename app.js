@@ -246,52 +246,67 @@ $('pdfBtn').onclick = async () => {
   const app = $('appUI');
   const pdf = $('pdfUI');
 
+  // 👉 hiển thị PDF UI
   app.style.display = 'none';
   pdf.style.display = 'block';
 
-  await new Promise(resolve => {
-    requestAnimationFrame(() => {
-      setTimeout(resolve, 500);
+  // 👉 đảm bảo render xong UI (QUAN TRỌNG)
+  await new Promise(r => setTimeout(r, 300));
+
+  try {
+
+    pdf.classList.add('capture');
+
+    const canvas = await html2canvas(pdf, {
+      scale: 2,
+      scrollY: -window.scrollY
     });
-  });
 
-  pdf.classList.add('capture');
+    pdf.classList.remove('capture');
 
-  const canvas = await html2canvas(pdf, {
-    scale: 2,
-    scrollY: -window.scrollY
-  });
+    const img = canvas.toDataURL('image/jpeg', 0.7);
 
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('p', 'mm', 'a4');
+
+    const pageWidth = 210;
+    const pageHeight = 297;
+
+    const ratio = Math.min(
+      pageWidth / canvas.width,
+      pageHeight / canvas.height
+    );
+
+    const w = canvas.width * ratio;
+    const h = canvas.height * ratio;
+
+    const x = (pageWidth - w) / 2;
+
+    doc.addImage(img, 'JPEG', x, 0, w, h);
+
+    doc.save('bao-gia-xe-ford.pdf');
+
+  } catch (e) {
+    console.error(e);
+  }
+
+  // 🔥 QUAN TRỌNG NHẤT
+  // 👉 đảm bảo nút BACK luôn hoạt động
   pdf.classList.remove('capture');
-
-  const img = canvas.toDataURL('image/jpeg', 0.7);
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('p', 'mm', 'a4');
-
-  const pageWidth = 210;
-  const pageHeight = 297;
-
-  const imgWidth = canvas.width;
-  const imgHeight = canvas.height;
-
-  const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
-
-  const finalWidth = imgWidth * ratio;
-  const finalHeight = imgHeight * ratio;
-
-  const x = (pageWidth - finalWidth) / 2;
-
-  doc.addImage(img, 'JPEG', x, 0, finalWidth, finalHeight);
-
-  doc.save('bao-gia-xe-ford.pdf');
 };
 
 // ===== BACK BUTTON =====
 const backBtn = $('backBtn');
-if(backBtn){
+
+if (backBtn) {
   backBtn.onclick = () => {
-    $('pdfUI').style.display = 'none';
-    $('appUI').style.display = 'block';
+    const pdf = $('pdfUI');
+    const app = $('appUI');
+
+    pdf.style.display = 'none';
+    app.style.display = 'block';
+
+    // 👉 reset scroll (tránh lỗi iPhone)
+    window.scrollTo(0, 0);
   };
 }
