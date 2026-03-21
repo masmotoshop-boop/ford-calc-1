@@ -246,25 +246,35 @@ $('pdfBtn').onclick = async () => {
   const app = $('appUI');
   const pdf = $('pdfUI');
 
-  // 👉 hiển thị PDF UI
+  // 👉 hiện UI PDF (có nút back)
   app.style.display = 'none';
   pdf.style.display = 'block';
 
-  // 👉 đảm bảo render xong UI (QUAN TRỌNG)
   await new Promise(r => setTimeout(r, 300));
 
   try {
 
-    pdf.classList.add('capture');
+    // ===== CLONE UI =====
+    const clone = pdf.cloneNode(true);
 
-    const canvas = await html2canvas(pdf, {
-      scale: 2,
-      scrollY: -window.scrollY
+    clone.style.position = 'fixed';
+    clone.style.left = '-9999px';
+    clone.style.top = '0';
+
+    // 👉 ẩn nút back trong clone
+    const btn = clone.querySelector('#backBtn');
+    if (btn) btn.remove();
+
+    document.body.appendChild(clone);
+
+    // ===== CAPTURE =====
+    const canvas = await html2canvas(clone, {
+      scale: 2
     });
 
-    pdf.classList.remove('capture');
+    document.body.removeChild(clone);
 
-    const img = canvas.toDataURL('image/jpeg', 0.7);
+    const img = canvas.toDataURL('image/jpeg', 0.8);
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('p', 'mm', 'a4');
@@ -289,12 +299,7 @@ $('pdfBtn').onclick = async () => {
   } catch (e) {
     console.error(e);
   }
-
-  // 🔥 QUAN TRỌNG NHẤT
-  // 👉 đảm bảo nút BACK luôn hoạt động
-  pdf.classList.remove('capture');
 };
-
 // ===== BACK BUTTON =====
 const backBtn = $('backBtn');
 
