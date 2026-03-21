@@ -230,10 +230,16 @@ $('pdfBtn').onclick = async () => {
     });
   });
 
-  const canvas = await html2canvas(pdf, {
+ // 👉 thêm class capture (ẩn nút)
+pdf.classList.add('capture');
+
+const canvas = await html2canvas(pdf, {
   scale: 2,
   scrollY: -window.scrollY
-  });
+});
+
+// 👉 bỏ class sau khi chụp xong
+pdf.classList.remove('capture');
 
   const img = canvas.toDataURL('image/jpeg', 0.7);
 
