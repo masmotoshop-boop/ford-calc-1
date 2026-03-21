@@ -25,6 +25,8 @@ const el = {
   car: $('car'),
   version: $('version'),
   area: $('area'),
+  serviceFee: $('serviceFee'),
+  serviceFeeValue: $('serviceFeeValue'),
   calc: $('calcBtn'),
 
   price: $('price'),
@@ -51,6 +53,19 @@ const el = {
   selectedCar: $('selectedCar')
 };
 
+/* ===== SERVICE FEE ===== */
+function formatMoney(x) {
+  return Number(x).toLocaleString('vi-VN');
+}
+
+// hiển thị mặc định
+el.serviceFeeValue.textContent = formatMoney(el.serviceFee.value);
+
+// khi kéo slider
+el.serviceFee.oninput = () => {
+  el.serviceFeeValue.textContent = formatMoney(el.serviceFee.value);
+  calc(); // 👈 QUAN TRỌNG (update lại kết quả)
+};
 // ===== LOAD =====
 el.car.innerHTML = '<option value="">Chọn xe</option>';
 Object.keys(data).forEach(c => el.car.add(new Option(c, c)));
@@ -164,7 +179,7 @@ function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
   // 🔥 FIX: tính trực tiếp
   const percent = +el.loanRange.value;
   const loan = Math.round(final * percent / 100);
-  const fees = tax + a.registration + 60000 + a.roadFee + a.insurance + service;
+  const fees = tax + a.registration + 60000 + Number(el.serviceFee.value);
   const equity = final - loan;
   const pay = equity + fees;
 
