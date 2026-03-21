@@ -16,6 +16,7 @@ function animateValue(el, start, end, duration = 500) {
 
   requestAnimationFrame(step);
 }
+
 // ===== DATA =====
 const data = typeof FORD_DATA !== "undefined" ? FORD_DATA : {};
 
@@ -39,7 +40,8 @@ const el = {
   reg: $('registration'),
   road: $('roadFee'),
   ins: $('insurance'),
-  service: $('service'),
+  service: $('serviceFee'), // 👈 FIX mapping
+
   total: $('total'),
 
   loanRange: $('loanRange'),
@@ -58,13 +60,13 @@ function formatMoney(x) {
   return Number(x).toLocaleString('vi-VN');
 }
 
-// mặc định
+// hiển thị mặc định
 el.serviceFeeValue.textContent = formatMoney(el.serviceFee.value);
 
-// kéo slider
+// kéo slider → update + tính lại
 el.serviceFee.oninput = () => {
   el.serviceFeeValue.textContent = formatMoney(el.serviceFee.value);
-  calc(); // update realtime
+  el.calc.click(); // ✅ FIX chuẩn
 };
 
 // ===== LOAD =====
@@ -84,26 +86,40 @@ el.car.onchange = () => {
 };
 
 // ===== CALCULATE =====
-function calc(){
+el.calc.onclick = () => {
+
+  // animation card
+  document.querySelectorAll('.card').forEach(c => {
+    c.classList.add('active');
+    setTimeout(() => c.classList.remove('active'), 300);
+  });
 
   const car = el.car.value;
   const ver = el.version.value;
   const area = el.area.value;
 
-  if (!car || !ver || !area) return;
+  if (!car || !ver || !area) return alert("Chọn đủ thông tin");
 
   const v = data[car].versions[ver];
   const a = data[car].areas[area];
 
   const color = el.colorFee.checked ? 8000000 : 0;
-  const service = Number(el.serviceFee.value);
+  const service = Number(el.serviceFee.value); // ✅ FIX chuẩn
 
   const price = v.price + color;
   const final = price - v.promo;
   const tax = Math.round(price * a.tax);
 
-  const total = final + tax + a.registration + 60000 + a.roadFee + a.insurance + service;
+  const total =
+    final +
+    tax +
+    a.registration +
+    60000 +
+    a.roadFee +
+    a.insurance +
+    service;
 
+  // ===== UI =====
   el.price.textContent = format(price);
   el.promo.textContent = format(v.promo);
   el.final.textContent = format(final);
@@ -113,6 +129,7 @@ function calc(){
   el.reg.textContent = format(60000);
   el.road.textContent = format(a.roadFee);
   el.ins.textContent = format(a.insurance);
+  el.service.textContent = format(service); // ✅ FIX hiển thị
 
   animateValue(el.total, 0, total);
 
@@ -120,10 +137,7 @@ function calc(){
 
   updateLoan();
   updatePDF(car, ver, price, v.promo, final, tax, a, service, total);
-}
-
-// nút tính
-el.calc.onclick = calc;
+};
 
 // ===== LOAN =====
 function updateLoan() {
@@ -140,14 +154,13 @@ function updateLoan() {
   const a = data[car].areas[area];
 
   const color = el.colorFee.checked ? 8000000 : 0;
-  const final = (v.price + color) - v.promo;
 
+  const final = (v.price + color) - v.promo;
   const loan = Math.round(final * percent / 100);
   const tax = Math.round((v.price + color) * a.tax);
-
   const serviceFee = Number(el.serviceFee.value);
-  const fees = tax + a.registration + 60000 + serviceFee;
 
+  const fees = tax + a.registration + 60000 + serviceFee;
   const equity = final - loan;
 
   animateValue(el.loanAmount, 0, loan);
@@ -157,3 +170,128 @@ function updateLoan() {
 }
 
 el.loanRange.oninput = updateLoan;
+
+// ===== PDF DATA =====
+function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
+
+  $('pdfCar').textContent = `FORD ${car} - ${ver}`;
+  $('pdfPrice').textContent = format(price);
+  $('pdfPromo').textContent = format(promo);
+  $('pdfFinal').textContent = format(final);
+
+  $('pdfTax').textContent = format(tax);
+  $('pdfPlate').textContent = format(a.registration);
+  $('pdfReg').textContent = format(60000);
+  $('pdfRoad').textContent = format(a.roadFee);
+  $('pdfIns').textContent = format(a.insurance);
+  $('pdfService').textContent = format(service);
+
+  $('pdfTotal').textContent = format(total);
+
+  const percent = +el.loanRange.value;
+  const loan = Math.round(final * percent / 100);
+  const fees = tax + a.registration + 60000 + Number(el.serviceFee.value);
+  const equity = final - loan;
+  const pay = equity + fees;
+
+  $('pdfPercent').textContent = percent + '%';
+  $('pdfLoan').textContent = format(loan);
+  $('pdfOwn').textContent = format(equity);
+  $('pdfCost').textContent = format(fees);
+  $('pdfPay').textContent = format(pay);
+}
+
+// ===== GIFTS =====
+let gifts = [
+  "Bảo hiểm thân xe",
+  "Camera hành trình",
+  "Phim cách nhiệt",
+  "Thảm sàn",
+  "Gối cổ",
+  "Bọc vô lăng",
+  "Dán kính",
+  "Túi cứu hộ",
+  "Bình xịt lốp",
+  "Bảo dưỡng"
+];
+
+function renderGifts() {
+  const box = $('giftList');
+  if (!box) return;
+
+  box.innerHTML = '';
+
+  gifts.slice(0, 10).forEach((g, i) => {
+    box.innerHTML += `
+      <div class="gift-item" onclick="editGift(${i})">
+        ✔ ${g}
+      </div>
+    `;
+  });
+}
+
+window.editGift = function(i){
+  const newGift = prompt("Sửa quà", gifts[i]);
+  if(newGift) gifts[i] = newGift;
+  renderGifts();
+}
+
+renderGifts();
+
+// ===== EXPORT PDF =====
+$('pdfBtn').onclick = async () => {
+
+  $('pdfDate').textContent = "Ngày: .... / .... / 2026";
+
+  const app = $('appUI');
+  const pdf = $('pdfUI');
+
+  app.style.display = 'none';
+  pdf.style.display = 'block';
+
+  await new Promise(resolve => {
+    requestAnimationFrame(() => {
+      setTimeout(resolve, 500);
+    });
+  });
+
+  pdf.classList.add('capture');
+
+  const canvas = await html2canvas(pdf, {
+    scale: 2,
+    scrollY: -window.scrollY
+  });
+
+  pdf.classList.remove('capture');
+
+  const img = canvas.toDataURL('image/jpeg', 0.7);
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+
+  const pageWidth = 210;
+  const pageHeight = 297;
+
+  const imgWidth = canvas.width;
+  const imgHeight = canvas.height;
+
+  const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
+
+  const finalWidth = imgWidth * ratio;
+  const finalHeight = imgHeight * ratio;
+
+  const x = (pageWidth - finalWidth) / 2;
+
+  doc.addImage(img, 'JPEG', x, 0, finalWidth, finalHeight);
+
+  doc.save('bao-gia-xe-ford.pdf');
+};
+
+// ===== BACK BUTTON =====
+const backBtn = $('backBtn');
+if(backBtn){
+  backBtn.onclick = () => {
+    $('pdfUI').style.display = 'none';
+    $('appUI').style.display = 'block';
+  };
+}
