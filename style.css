@@ -280,8 +280,8 @@ button:active {
 }
 
 /* GREEN */
-.pdf-highlight-green {
-  margin-top: 6px;
+.pdf-big-price {
+  margin-top: 10px;
   padding: 10px 14px;
   border-radius: 12px;
   background: linear-gradient(135deg, #305853, #1B2A30);
@@ -292,12 +292,14 @@ button:active {
   align-items: center;
 }
 
-.pdf-highlight-green span:first-child {
+/* label */
+.pdf-big-price div:first-child {
   font-size: 13px;
   opacity: 0.9;
 }
 
-.pdf-highlight-green span:last-child {
+/* số tiền */
+.pdf-big-price div:last-child {
   font-size: 18px;
   font-weight: 700;
 }
