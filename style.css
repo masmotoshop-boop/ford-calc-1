@@ -303,9 +303,9 @@ button:active {
 .pdf-pay {
   background: linear-gradient(135deg, var(--danger), #6e1b16);
   color: #fff;
-  padding: 16px;
+  padding: 10px;
   text-align: center;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: bold;
   border-radius: 14px;
   margin: 14px 0;
