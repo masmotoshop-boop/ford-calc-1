@@ -34,16 +34,28 @@ const data = typeof FORD_DATA !== "undefined" ? FORD_DATA : {};
 
 // ===== GIFTS =====
 let gifts = [
-  { name: "Bảo hiểm thân xe", checked: true },
-  { name: "Camera hành trình", checked: true },
-  { name: "Phim cách nhiệt", checked: true },
-  { name: "Thảm sàn", checked: true },
-  { name: "Gối cổ", checked: true },
-  { name: "Bọc vô lăng", checked: true },
-  { name: "Dán kính", checked: true },
-  { name: "Túi cứu hộ", checked: true },
-  { name: "Bình xịt lốp", checked: true },
-  { name: "Bảo dưỡng", checked: true }
+  { name: "Bao Tay Lái", checked: true },
+  { name: "Nước Hoa Ô tô", checked: true },
+  { name: "Gối Cổ", checked: true },
+  { name: "Áo Trùm Xe", checked: true },
+  { name: "Thảm Lót Sàn", checked: true },
+  { name: "Chai Dưỡng Lốp", checked: true },
+  { name: "Bao Da Hồ Sơ", checked: true },
+  { name: "Cứu Hộ Ford 3 Năm", checked: true },
+  { name: "Công Bảo Dưỡng 1000km", checked: true },
+  { name: "Bảo Hiểm Thân Vỏ", checked: false },
+  { name: "Phim Cách Nhiệt", checked: false },
+  { name: "Camera Hành Trình", checked: false },
+  { name: "Bảo Hành Mở Rộng", checked: false },
+  { name: "Bọc Ghế Da", checked: false },
+  { name: "Phũ Ceramic USA", checked: false },
+  { name: "Phũ Gầm Chống Sét", checked: false },
+  { name: "Thanh Thể Thao", checked: false },
+  { name: "Android Box", checked: false },
+  { name: "Camera NĐ 10", checked: false },
+  { name: "Lót sàn Simily", checked: false },
+  { name: "Lót Nhựa Thùng Sau", checked: false },
+  { name: "Nắp Thùng Sau", checked: false }
 ];
 
 function renderGifts(isPDF = false) {
