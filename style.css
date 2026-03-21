@@ -1,3 +1,16 @@
+/* ===== COLOR THEME ===== */
+:root {
+  --primary: #305853;        /* Deep Teal */
+  --secondary: #1B2A30;      /* Slate Blue */
+  --accent: #B06821;         /* Golden Amber */
+  --danger: #9E2C21;         /* Brick Red */
+  --dark: #511B18;           /* Dark Mahogany */
+
+  --text-light: #ffffff;
+  --text-dark: #222222;
+  --soft-bg: #f0f2f5;
+}
+
 /* ===== RESET ===== */
 * {
   box-sizing: border-box;
@@ -7,7 +20,8 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background: #f4f6f9;
+  background: var(--secondary);
+  color: var(--text-light);
 }
 
 /* ===== APP ===== */
@@ -25,20 +39,21 @@ body {
 .title {
   font-size: 20px;
   font-weight: 700;
+  color: var(--text-light);
 }
 
 .subtitle {
   font-size: 13px;
-  color: #888;
+  color: #aab;
 }
 
 /* ===== CARD ===== */
 .card {
-  background: #fff;
+  background: var(--primary);
   border-radius: 18px;
   padding: 16px;
   margin-bottom: 14px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
   transition: all 0.3s ease;
 }
 
@@ -51,7 +66,7 @@ label {
   font-size: 13px;
   margin-top: 10px;
   display: block;
-  color: #555;
+  color: #cfd8dc;
 }
 
 select,
@@ -61,8 +76,9 @@ input[type="range"] {
   margin-top: 6px;
   border-radius: 12px;
   border: none;
-  background: #f0f2f5;
+  background: #2c4a46;
   font-size: 14px;
+  color: #fff;
 }
 
 .checkbox {
@@ -82,7 +98,7 @@ button {
   font-weight: 700;
   font-size: 15px;
   color: #fff;
-  background: linear-gradient(135deg, #ff6a00, #ff2d00);
+  background: linear-gradient(135deg, var(--accent), #8e531a);
   transition: 0.2s;
 }
 
@@ -91,7 +107,7 @@ button:active {
 }
 
 .btn-dark {
-  background: #222;
+  background: var(--dark);
 }
 
 /* ===== RESULT ===== */
@@ -109,17 +125,17 @@ button:active {
 }
 
 .discount {
-  color: #e53935;
+  color: var(--danger);
 }
 
 .final {
-  color: #2e7d32;
+  color: var(--accent);
   font-weight: 600;
 }
 
 .divider {
   height: 1px;
-  background: #eee;
+  background: rgba(255,255,255,0.1);
   margin: 10px 0;
 }
 
@@ -128,7 +144,7 @@ button:active {
   margin-top: 10px;
   padding: 14px;
   border-radius: 14px;
-  background: linear-gradient(135deg, #ff6a00, #ff2d00);
+  background: linear-gradient(135deg, var(--accent), #8e531a);
   color: #fff;
   font-weight: 700;
   display: flex;
@@ -147,10 +163,10 @@ button:active {
   margin-top: 16px;
   padding: 16px;
   border-radius: 16px;
-  background: linear-gradient(135deg, #ff2d00, #ff0000);
+  background: linear-gradient(135deg, var(--danger), #6e1b16);
   color: #fff;
   text-align: center;
-  box-shadow: 0 6px 20px rgba(255,0,0,0.25);
+  box-shadow: 0 6px 20px rgba(158,44,33,0.4);
 }
 
 .payment-box div:first-child {
@@ -168,6 +184,7 @@ button:active {
 #pdfUI {
   display: none;
   background: #fff;
+  color: #000;
 }
 
 .pdf-container {
@@ -193,7 +210,7 @@ button:active {
 .pdf-highlight {
   margin-top: 12px;
   padding: 10px;
-  background: #ff3d00;
+  background: var(--danger);
   color: #fff;
   text-align: center;
   font-weight: bold;
@@ -206,6 +223,7 @@ button:active {
   text-align: center;
   color: #555;
 }
+
 /* ===== PDF BOLD SALES ===== */
 
 .pdf-container {
@@ -218,7 +236,7 @@ button:active {
 
 /* HEADER */
 .pdf-header {
-  background: linear-gradient(135deg, #ff6a00, #ff2d00);
+  background: linear-gradient(135deg, var(--accent), #8e531a);
   color: #fff;
   padding: 14px;
   border-radius: 14px;
@@ -245,7 +263,7 @@ button:active {
   border-radius: 14px;
   padding: 12px;
   margin-bottom: 12px;
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
 }
 
 .pdf-section {
@@ -272,7 +290,7 @@ button:active {
 
 /* TOTAL */
 .pdf-total {
-  background: linear-gradient(135deg, #ff6a00, #ff2d00);
+  background: linear-gradient(135deg, var(--accent), #8e531a);
   color: #fff;
   padding: 12px;
   border-radius: 12px;
@@ -283,7 +301,7 @@ button:active {
 
 /* PAY */
 .pdf-pay {
-  background: linear-gradient(135deg, #ff0000, #ff3d00);
+  background: linear-gradient(135deg, var(--danger), #6e1b16);
   color: #fff;
   padding: 16px;
   text-align: center;
@@ -306,10 +324,11 @@ button:active {
   color: #666;
   margin-top: 10px;
 }
+
 /* ===== GIÁ LỚN ===== */
 .pdf-big-price {
   margin-top: 10px;
-  background: linear-gradient(135deg, #2e7d32, #43a047);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   color: #fff;
   border-radius: 12px;
   padding: 12px;
@@ -327,14 +346,11 @@ button:active {
   margin-top: 4px;
 }
 
-/* discount */
-.discount {
-  color: #e53935;
-}
 /* payment */
 .pdf-card .pdf-row span:last-child {
   font-weight: 600;
 }
+
 .gift-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -342,8 +358,9 @@ button:active {
 }
 
 .gift-item{
-  background:#f3f4f6;
+  background:#2c4a46;
   padding:10px;
   border-radius:10px;
   font-size:14px;
+  color:#fff;
 }
