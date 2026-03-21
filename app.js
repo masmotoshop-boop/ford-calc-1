@@ -147,8 +147,8 @@ function updateLoan() {
   const final = (v.price + color) - v.promo;
   const loan = Math.round(final * percent / 100);
   const tax = Math.round((v.price + color) * a.tax);
-
-  const fees = tax + a.registration + 60000 + a.roadFee + a.insurance + service;
+  const serviceFee = Number(el.serviceFee.value);
+  const fees = tax + a.registration + 60000 + serviceFee;
   const equity = final - loan;
 
   animateValue(el.loanAmount, 0, loan);
