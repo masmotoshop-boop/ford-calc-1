@@ -5,7 +5,10 @@ const format = n => (n || 0).toLocaleString('vi-VN');
 function formatMoney(x) {
   return Number(x).toLocaleString('vi-VN');
 }
-
+function formatInputNumber(value) {
+  const number = value.replace(/\D/g, '');
+  return number.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
 // ===== ANIMATE =====
 function animateValue(el, start, end, duration = 500, instant = false) {
   if (instant) {
@@ -118,17 +121,26 @@ const el = {
   payment: $('totalPayment'),
 
   colorFee: $('colorFee'),
-  selectedCar: $('selectedCar')
+  selectedCar: $('selectedCar'),
+  promoMode: $('promoMode'),
+  promoInput: $('promoInput'),
 };
 
-// ===== SERVICE =====
-el.serviceFeeValue.textContent = formatMoney(el.serviceFee.value);
-
+// SERVICE
 el.serviceFee.oninput = () => {
   el.serviceFeeValue.textContent = formatMoney(el.serviceFee.value);
   calculate();
 };
 
+// PROMO MODE
+el.promoMode.onchange = () => {
+  if (el.promoMode.value === 'manual') {
+    el.promoInput.style.display = 'block';
+  } else {
+    el.promoInput.style.display = 'none';
+  }
+  calculate();
+};
 // ===== LOAD CAR =====
 el.car.innerHTML = '<option value="">Chọn xe</option>';
 Object.keys(data).forEach(c => el.car.add(new Option(c, c)));
@@ -170,7 +182,13 @@ function calculate() {
   const service = Number(el.serviceFee.value);
 
   const price = v.price + color;
-  const final = price - v.promo;
+  let promo = v.promo;
+
+if (el.promoMode.value === 'manual') {
+ promo = Number(el.promoInput.value.replace(/\./g, '')) || 0;
+}
+
+const final = price - promo;
   const tax = Math.round(price * a.tax);
 
   const total =
@@ -183,7 +201,7 @@ function calculate() {
     service;
 
   el.price.textContent = format(price);
-  el.promo.textContent = format(v.promo);
+  el.promo.textContent = format(promo);
   el.final.textContent = format(final);
 
   el.tax.textContent = format(tax);
@@ -198,7 +216,7 @@ function calculate() {
   el.selectedCar.textContent = `FORD ${car} - ${ver}`;
 
   updateLoan();
-  updatePDF(car, ver, price, v.promo, final, tax, a, service, total);
+  updatePDF(car, ver, price, promo, final, tax, a, service, total);
 }
 
 // ===== LOAN =====
@@ -217,9 +235,24 @@ function updateLoan() {
 
   const color = el.colorFee.checked ? 8000000 : 0;
 
-  const final = (v.price + color) - v.promo;
+  // ===== PROMO (FIX CHUẨN) =====
+  let promo = v.promo;
+
+  if (el.promoMode && el.promoMode.value === 'manual') {
+    promo = Number(
+      (el.promoInput.value || '0').replace(/\./g, '')
+    ) || 0;
+  }
+
+  // ===== FINAL =====
+  const price = v.price + color;
+  const final = price - promo;
+
+  // ===== LOAN =====
   const loan = Math.round(final * percent / 100);
-  const tax = Math.round((v.price + color) * a.tax);
+
+  // ===== FEES =====
+  const tax = Math.round(price * a.tax);
   const serviceFee = Number(el.serviceFee.value);
 
   const fees =
@@ -240,9 +273,23 @@ function updateLoan() {
   animateValue(el.payment, 0, fees + equity, 500, instant);
 }
 
+// ===== EVENT =====
 el.loanRange.oninput = updateLoan;
 el.loanRange.onchange = updateLoan;
 
+// 👉 QUAN TRỌNG: khi nhập promo → phải update loan luôn
+el.promoInput.oninput = () => {
+
+  // format hiển thị
+  el.promoInput.value = formatInputNumber(el.promoInput.value);
+
+  // tính lại
+  calculate();
+  updateLoan();
+};
+el.promoInput.onfocus = () => {
+  el.promoInput.value = el.promoInput.value.replace(/\./g, '');
+};
 // ===== PDF DATA =====
 function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
 
@@ -295,7 +342,13 @@ $('pdfBtn').onclick = async () => {
     const service = Number(el.serviceFee.value);
 
     const price = v.price + color;
-    const final = price - v.promo;
+    let promo = v.promo;
+
+if (el.promoMode.value === 'manual') {
+  promo = Number(el.promoInput.value.replace(/\./g, '')) || 0;
+}
+
+const final = price - promo;
     const tax = Math.round(price * a.tax);
 
     const total =
@@ -307,7 +360,7 @@ $('pdfBtn').onclick = async () => {
       a.insurance +
       service;
 
-    updatePDF(car, ver, price, v.promo, final, tax, a, service, total);
+    updatePDF(car, ver, price, promo, final, tax, a, service, total);
     renderGifts(true);
 
     $('pdfDate').textContent = "Ngày: .... / .... / 2026";
