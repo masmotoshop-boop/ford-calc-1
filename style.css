@@ -1,21 +1,20 @@
-/* ===== COLOR THEME ===== */
+/* ===== ROOT + RESET ===== */
 :root {
-  --primary: #305853;        /* Deep Teal */
-  --secondary: #1B2A30;      /* Slate Blue */
-  --accent: #B06821;         /* Golden Amber */
-  --danger: #9E2C21;         /* Brick Red */
-  --dark: #511B18;           /* Dark Mahogany */
+  --primary: #305853;
+  --secondary: #1B2A30;
+  --accent: #B06821;
+  --danger: #9E2C21;
+  --dark: #511B18;
 
   --text-light: #ffffff;
   --text-dark: #222222;
-  --soft-bg: #f0f2f5;
 }
 
-/* ===== RESET ===== */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent; /* 👉 mượt mobile */
 }
 
 body {
@@ -24,30 +23,17 @@ body {
   color: var(--text-light);
 }
 
-/* ===== APP ===== */
+/* ===================== */
+/* ===== UI APP ===== */
+/* ===================== */
+
 .app {
   max-width: 430px;
   margin: auto;
   padding: 16px;
 }
 
-/* ===== HEADER ===== */
-.header {
-  margin-bottom: 16px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-light);
-}
-
-.subtitle {
-  font-size: 13px;
-  color: #aab;
-}
-
-/* ===== CARD ===== */
+/* CARD */
 .card {
   background: var(--primary);
   border-radius: 18px;
@@ -61,7 +47,7 @@ body {
   transform: translateY(-4px);
 }
 
-/* ===== FORM ===== */
+/* FORM */
 label {
   font-size: 13px;
   margin-top: 10px;
@@ -81,14 +67,20 @@ input[type="range"] {
   color: #fff;
 }
 
+/* CHECKBOX */
 .checkbox {
-  margin-top: 10px;
-  display: flex;
-  gap: 6px;
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* ===== BUTTON ===== */
+.checkbox input {
+  transform: scale(1.25);
+  accent-color: #ff7a00;
+}
+
+/* BUTTON */
 button {
   width: 100%;
   margin-top: 12px;
@@ -99,22 +91,19 @@ button {
   font-size: 15px;
   color: #fff;
   background: linear-gradient(135deg, var(--accent), #8e531a);
-  transition: 0.2s;
 }
 
 button:active {
   transform: scale(0.96);
 }
 
-.btn-dark {
-  background: var(--dark);
-}
-
-/* ===== RESULT ===== */
+/* RESULT */
 .car-name {
   font-weight: 700;
   margin-bottom: 10px;
   font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .row {
@@ -124,14 +113,8 @@ button:active {
   font-size: 14px;
 }
 
-.discount {
-  color: var(--danger);
-}
-
-.final {
-  color: var(--accent);
-  font-weight: 600;
-}
+.discount { color: var(--danger); }
+.final { color: var(--accent); font-weight: 600; }
 
 .divider {
   height: 1px;
@@ -139,7 +122,7 @@ button:active {
   margin: 10px 0;
 }
 
-/* ===== TOTAL ===== */
+/* TOTAL */
 .total {
   margin-top: 10px;
   padding: 14px;
@@ -149,38 +132,101 @@ button:active {
   font-weight: 700;
   display: flex;
   justify-content: space-between;
-  font-size: 15px;
 }
 
-/* ===== SECTION ===== */
-.section-title {
-  font-weight: 700;
-  margin-bottom: 10px;
-}
+/* ===== APP ONLY - PAYMENT BOX ===== */
+#appUI .payment-box {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
 
-/* ===== PAYMENT BOX (TRẢ TRƯỚC) ===== */
-.payment-box {
-  margin-top: 16px;
-  padding: 16px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, var(--danger), #6e1b16);
-  color: #fff;
+  background: linear-gradient(135deg, #9e2c21, #7a1f1a);
+
   text-align: center;
-  box-shadow: 0 6px 20px rgba(158,44,33,0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px; /* 👈 giảm khoảng cách */
+
+  box-shadow: none;
 }
 
-.payment-box div:first-child {
-  font-size: 13px;
-  opacity: 0.9;
+/* label */
+#appUI .payment-box div:first-child {
+  font-size: 11px;
+  opacity: 0.75;
+  letter-spacing: 0.5px;
 }
 
-.payment-box div:last-child {
-  font-size: 22px;
+/* số tiền */
+#appUI .payment-box div:last-child {
+  font-size: 20px;       /* 👈 chuẩn hơn */
   font-weight: 700;
-  margin-top: 4px;
+  line-height: 1.2;
+}
+/* SERVICE VALUE */
+#serviceFeeValue {
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 6px;
 }
 
-/* ===== PDF ===== */
+/* RANGE */
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+}
+
+/* SLIDER */
+input[type="range"]::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  background: #ff7a00;
+  border-radius: 50%;
+}
+
+/* PROMO INPUT */
+#promoInput {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  margin-top: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+  font-size: 16px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+#promoInput::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+#promoInput:focus {
+  border: 1px solid #ff7a00;
+  background: rgba(255,255,255,0.12);
+}
+
+/* GIFT (APP) */
+#appUI .gift-item {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+#appUI .gift-item input {
+  accent-color: #ff7a00;
+}
+/* ===== ẨN KẾT QUẢ CHỈ TRONG APP ===== */
+#appUI .result {
+  display: none;
+}
+
+/* ===================== */
+/* ===== UI PDF ===== */
+/* ===================== */
+
 #pdfUI {
   display: none;
   background: #fff;
@@ -188,50 +234,11 @@ button:active {
 }
 
 .pdf-container {
-  padding: 20px;
-  max-width: 400px;
-  margin: auto;
-  font-family: Arial;
-}
-
-.pdf-row {
-  display: flex;
-  justify-content: space-between;
-  margin: 6px 0;
-  font-size: 14px;
-}
-
-.pdf-total {
-  margin-top: 10px;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.pdf-highlight {
-  margin-top: 12px;
-  padding: 10px;
-  background: var(--danger);
-  color: #fff;
-  text-align: center;
-  font-weight: bold;
-  border-radius: 8px;
-}
-
-.pdf-contact {
-  margin-top: 20px;
-  font-size: 12px;
-  text-align: center;
-  color: #555;
-}
-
-/* ===== PDF BOLD SALES ===== */
-
-.pdf-container {
-  font-family: Arial;
   padding: 16px;
   max-width: 420px;
   margin: auto;
   background: #fff;
+  font-family: Arial;
 }
 
 /* HEADER */
@@ -243,18 +250,10 @@ button:active {
   margin-bottom: 14px;
 }
 
-.pdf-title {
-  font-size: 14px;
-}
-
 .pdf-car {
   font-size: 18px;
   font-weight: bold;
-}
-
-.pdf-date {
-  font-size: 11px;
-  opacity: 0.8;
+  text-transform: uppercase;
 }
 
 /* CARD */
@@ -279,63 +278,54 @@ button:active {
   margin: 5px 0;
 }
 
-/* GREEN */
+/* BIG PRICE */
 .pdf-big-price {
   margin-top: 10px;
   padding: 10px 14px;
   border-radius: 12px;
   background: linear-gradient(135deg, #305853, #1B2A30);
   color: #fff;
-
   display: flex;
   justify-content: space-between;
-  align-items: center;
-}
-
-/* label */
-.pdf-big-price div:first-child {
-  font-size: 13px;
-  opacity: 0.9;
-}
-
-/* số tiền */
-.pdf-big-price div:last-child {
-  font-size: 18px;
-  font-weight: 800;
 }
 
 /* TOTAL */
-.pdf-total {
+.pdf-row-total {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
   background: linear-gradient(135deg, var(--accent), #8e531a);
   color: #fff;
-  padding: 12px;
-  border-radius: 12px;
-  font-weight: bold;
-
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  font-weight: 700;
 }
 
 /* PAY */
-.pdf-pay {
+.pdf-row-pay {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
   background: linear-gradient(135deg, var(--danger), #6e1b16);
   color: #fff;
-  padding: 12px;
-  border-radius: 14px;
-
   display: flex;
   justify-content: space-between;
-  align-items: center;
-
-  font-weight: bold;
-  font-size: 17px;
+  font-weight: 700;
 }
 
 /* GIFT */
-.pdf-gift {
-  font-size: 13px;
-  line-height: 1.6;
+.gift-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+#pdfUI .gift-item {
+  background: #f3f4f6;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #000;
 }
 
 /* FOOTER */
@@ -346,186 +336,19 @@ button:active {
   margin-top: 10px;
 }
 
-/* payment */
-.pdf-card .pdf-row span:last-child {
-  font-weight: 600;
-}
-.gift-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* 2 cột */
-  gap: 6px;
-}
-.gift-item {
-  background: #f3f4f6;
-  padding: 6px 8px;     /* 👈 giảm chiều cao để fit 5 dòng */
-  border-radius: 8px;
-  font-size: 12px;      /* 👈 nhỏ lại để không tràn */
-}
-.pdf-total span,
-.pdf-pay span {
-  white-space: nowrap;
-}
-/* Tổng lăn bánh */
-.pdf-row-total {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid #ddd;
-  font-weight: 700;
-}
-
-/* Trả trước */
-.pdf-row-pay {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid #ddd;
-  font-weight: 700;
-  color: #9E2C21; /* đỏ nhẹ */
-}
-/* Tổng lăn bánh */
-.pdf-row-total {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
-
-  background: linear-gradient(135deg, var(--accent), #8e531a);
-  color: #fff;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  font-weight: 700;
-}
-
-/* Trả trước */
-.pdf-row-pay {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border-radius: 10px;
-
-  background: linear-gradient(135deg, var(--danger), #6e1b16);
-  color: #fff;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  font-weight: 700;
-}
-/* nút cuối trang */
+/* BACK BUTTON */
 #backBtn {
   width: 100%;
   margin-top: 16px;
-  padding: 12px;	
+  padding: 12px;
   border-radius: 10px;
-  border: none;
-  font-weight: 600;
-
   background: #ddd;
   color: #000;
 }
 
-/* mặc định hiển thị */
-.no-print {
-  display: block;
-}
+/* PRINT CONTROL */
+.no-print { display: block; }
 
-/* 👉 khi chụp PDF thì ẩn */
 #pdfUI.capture .no-print {
   display: none;
-}
-/* Ẩn result chỉ trong app UI */
-#appUI .result {
-  display: none;
-}
-/* ===== APP ONLY - GIẢM KHUNG TRẢ TRƯỚC ===== */
-#appUI .payment-box {
-  padding: 8px 10px;              /* giảm chiều cao */
-  border-radius: 10px;
-  margin-top: 10px;
-
-  /* giảm độ gắt */
-  background: linear-gradient(135deg, #9e2c21, #7a1f1a);
-
-  box-shadow: none;               /* bỏ glow */
-}
-
-#appUI .payment-box div:first-child {
-  font-size: 11px;
-  opacity: 0.8;
-}
-
-#appUI .payment-box div:last-child {
-  font-size: 18px;               /* nhỏ lại */
-  font-weight: 600;
-  margin-top: 2px;
-}
-#appUI .gift-item {
-  color: #0f172a;   /* đậm, hiện đại */
-  font-weight: 600;
-}
-#appUI .gift-item input {
-  accent-color: #ff7a00;  /* màu cam brand */
-}
-#serviceFeeValue {
-  text-align: center;
-  font-weight: 600;
-  font-size: 16px;
-  margin-top: 6px;
-  letter-spacing: 0.5px;
-}
-input[type="range"] {
-  width: 100%;
-  height: 6px;
-}
-#appUI .checkbox {
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-#appUI .checkbox input {
-  transform: scale(1.25);
-  accent-color: #ff7a00;
-}
-input[type="range"]::-webkit-slider-thumb {
-  width: 16px;
-  height: 16px;
-  background: #ff7a00;
-  border-radius: 50%;
-}
-#promoInput {
-  width: 100%;
-  height: 46px;
-  padding: 0 14px;
-  margin-top: 8px;
-
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.15);
-
-  font-size: 16px;
-  font-weight: 600;
-
-  outline: none;
-
-  background: rgba(255,255,255,0.08);
-  color: #fff;
-
-  transition: 0.2s;
-}
-
-#promoInput::placeholder {
-  color: rgba(255,255,255,0.5);
-}
-
-#promoInput:focus {
-  border: 1px solid #ff7a00;
-  background: rgba(255,255,255,0.12);
-}
-.car-name,
-.pdf-car {
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 700;
 }
