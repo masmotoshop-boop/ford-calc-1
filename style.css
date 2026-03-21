@@ -1,4 +1,4 @@
-/* ===== COLOR THEME ===== */
+ko/* ===== COLOR THEME ===== */
 :root {
   --primary: #305853;        /* Deep Teal */
   --secondary: #1B2A30;      /* Slate Blue */
@@ -292,14 +292,12 @@ button:active {
   align-items: center;
 }
 
-/* label */
-.pdf-highlight-green div:first-child {
+.pdf-highlight-green span:first-child {
   font-size: 13px;
   opacity: 0.9;
 }
 
-/* số tiền */
-.pdf-highlight-green div:last-child {
+.pdf-highlight-green span:last-child {
   font-size: 18px;
   font-weight: 700;
 }
