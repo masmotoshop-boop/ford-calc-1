@@ -381,3 +381,34 @@ button:active {
   font-weight: 700;
   color: #9E2C21; /* đỏ nhẹ */
 }
+/* Tổng lăn bánh */
+.pdf-row-total {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, var(--accent), #8e531a);
+  color: #fff;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-weight: 700;
+}
+
+/* Trả trước */
+.pdf-row-pay {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, var(--danger), #6e1b16);
+  color: #fff;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-weight: 700;
+}
