@@ -350,19 +350,16 @@ button:active {
 .pdf-card .pdf-row span:last-child {
   font-weight: 600;
 }
-
-.gift-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
+.gift-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 cột */
+  gap: 6px;
 }
-
-.gift-item{
-  background:#2c4a46;
-  padding:10px;
-  border-radius:10px;
-  font-size:14px;
-  color:#fff;
+.gift-item {
+  background: #f3f4f6;
+  padding: 6px 8px;     /* 👈 giảm chiều cao để fit 5 dòng */
+  border-radius: 8px;
+  font-size: 12px;      /* 👈 nhỏ lại để không tràn */
 }
 .pdf-total span,
 .pdf-pay span {
