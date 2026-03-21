@@ -195,7 +195,7 @@ function renderGifts() {
 
   box.innerHTML = '';
 
-  gifts.forEach((g, i) => {
+  gifts.slice(0, 10).forEach((g, i) => {
     box.innerHTML += `
       <div class="gift-item" onclick="editGift(${i})">
         ✔ ${g}
