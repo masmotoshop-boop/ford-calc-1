@@ -188,7 +188,7 @@ function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
 
   $('pdfTotal').textContent = format(total);
 
-  const percent = +el.loanRange.value;
+  const percent = Number(el.loanRange.value) || 0;
   const loan = Math.round(final * percent / 100);
   const fees = tax + a.registration + 60000 + Number(el.serviceFee.value);
   const equity = final - loan;
@@ -240,6 +240,8 @@ renderGifts();
 
 // ===== EXPORT PDF =====
 $('pdfBtn').onclick = async () => {
+
+  updateLoan(); // ✅ FIX
 
   $('pdfDate').textContent = "Ngày: .... / .... / 2026";
 
