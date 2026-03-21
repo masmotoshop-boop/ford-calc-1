@@ -1,13 +1,13 @@
 // ===== HELPER =====
 const $ = id => document.getElementById(id);
-// ===== FIX UI INIT =====
-$('appUI').style.display = 'block';
-$('pdfUI').style.display = 'none';
 const format = n => (n || 0).toLocaleString('vi-VN');
+
+function formatMoney(x) {
+  return Number(x).toLocaleString('vi-VN');
+}
 
 // ===== ANIMATE =====
 function animateValue(el, start, end, duration = 500, instant = false) {
-
   if (instant) {
     el.textContent = format(end);
     return;
@@ -28,42 +28,65 @@ function animateValue(el, start, end, duration = 500, instant = false) {
 
 // ===== DATA =====
 const data = typeof FORD_DATA !== "undefined" ? FORD_DATA : {};
+
 // ===== GIFTS =====
 let gifts = [
-  "Bảo hiểm thân xe",
-  "Camera hành trình",
-  "Phim cách nhiệt",
-  "Thảm sàn",
-  "Gối cổ",
-  "Bọc vô lăng",
-  "Dán kính",
-  "Túi cứu hộ",
-  "Bình xịt lốp",
-  "Bảo dưỡng"
+  { name: "Bảo hiểm thân xe", checked: true },
+  { name: "Camera hành trình", checked: true },
+  { name: "Phim cách nhiệt", checked: true },
+  { name: "Thảm sàn", checked: true },
+  { name: "Gối cổ", checked: true },
+  { name: "Bọc vô lăng", checked: true },
+  { name: "Dán kính", checked: true },
+  { name: "Túi cứu hộ", checked: true },
+  { name: "Bình xịt lốp", checked: true },
+  { name: "Bảo dưỡng", checked: true }
 ];
 
-function renderGifts() {
-  const box = $('giftList');
+function renderGifts(isPDF = false) {
+
+  const box = isPDF ? $('giftListPDF') : $('giftListApp');
   if (!box) return;
 
   box.innerHTML = '';
 
-  gifts.slice(0, 10).forEach((g, i) => {
-    box.innerHTML += `
-      <div class="gift-item" onclick="editGift(${i})">
-        ✔ ${g}
-      </div>
-    `;
+  gifts.forEach((g, index) => {
+
+    // 👉 nếu là PDF và chưa tick → bỏ qua
+    if (isPDF && !g.checked) return;
+
+    if (isPDF) {
+      box.innerHTML += `
+        <div class="gift-item">✔ ${g.name}</div>
+      `;
+    } else {
+      box.innerHTML += `
+        <label class="gift-item">
+          <input type="checkbox"
+                 ${g.checked ? 'checked' : ''}
+                 onchange="toggleGift(${index})">
+          ${g.name}
+        </label>
+      `;
+    }
+
   });
 }
+window.toggleGift = function(i) {
+  gifts[i].checked = !gifts[i].checked;
+  renderGifts(false); // 👈 cập nhật UI ngay
+};
 
 window.editGift = function(i){
-  const newGift = prompt("Sửa quà", gifts[i]);
-  if(newGift) gifts[i] = newGift;
-  renderGifts();
-}
+  const newGift = prompt("Sửa quà", gifts[i].name);
+  if(newGift) {
+    gifts[i].name = newGift; // 👈 sửa đúng field
+    renderGifts(false);
+  }
+};
 
-renderGifts();
+// render lần đầu
+renderGifts(false);
 
 // ===== ELEMENT =====
 const el = {
@@ -73,8 +96,6 @@ const el = {
 
   serviceFee: $('serviceFee'),
   serviceFeeValue: $('serviceFeeValue'),
-
-  calc: $('calcBtn'),
 
   price: $('price'),
   promo: $('promo'),
@@ -100,48 +121,40 @@ const el = {
   selectedCar: $('selectedCar')
 };
 
-// ===== SERVICE FEE =====
-function formatMoney(x) {
-  return Number(x).toLocaleString('vi-VN');
-}
-
+// ===== SERVICE =====
 el.serviceFeeValue.textContent = formatMoney(el.serviceFee.value);
 
 el.serviceFee.oninput = () => {
   el.serviceFeeValue.textContent = formatMoney(el.serviceFee.value);
-  calculate(); // ✅
+  calculate();
 };
 
-// ===== LOAD =====
+// ===== LOAD CAR =====
 el.car.innerHTML = '<option value="">Chọn xe</option>';
 Object.keys(data).forEach(c => el.car.add(new Option(c, c)));
 
-// ===== CHANGE CAR (LOAD VERSION + AREA) =====
+// ===== CHANGE CAR =====
 el.car.onchange = () => {
-
   const car = data[el.car.value];
   if (!car) return;
 
-  // load version
   el.version.innerHTML = '<option value="">Chọn phiên bản</option>';
   Object.keys(car.versions).forEach(v => {
     el.version.add(new Option(v, v));
   });
 
-  // load area
   el.area.innerHTML = '<option value="">Chọn khu vực</option>';
   Object.keys(car.areas).forEach(a => {
     el.area.add(new Option(a, a));
   });
-
 };
 
-// ===== AUTO CALCULATE =====
+// ===== AUTO =====
 el.version.onchange = calculate;
 el.area.onchange = calculate;
 el.colorFee.onchange = calculate;
-el.serviceFee.oninput = calculate;
-// ===== CHANGE CAR =====
+
+// ===== CALCULATE =====
 function calculate() {
 
   const car = el.car.value;
@@ -186,7 +199,7 @@ function calculate() {
 
   updateLoan();
   updatePDF(car, ver, price, v.promo, final, tax, a, service, total);
-};
+}
 
 // ===== LOAN =====
 function updateLoan() {
@@ -209,7 +222,6 @@ function updateLoan() {
   const tax = Math.round((v.price + color) * a.tax);
   const serviceFee = Number(el.serviceFee.value);
 
-  // ✅ FIX CHUẨN
   const fees =
     tax +
     a.registration +
@@ -220,12 +232,12 @@ function updateLoan() {
 
   const equity = final - loan;
 
-const instant = window.__EXPORTING_PDF__ === true;
+  const instant = window.__EXPORTING_PDF__ === true;
 
-animateValue(el.loanAmount, 0, loan, 500, instant);
-animateValue(el.costs, 0, fees, 500, instant);
-animateValue(el.equity, 0, equity, 500, instant);
-animateValue(el.payment, 0, fees + equity, 500, instant);
+  animateValue(el.loanAmount, 0, loan, 500, instant);
+  animateValue(el.costs, 0, fees, 500, instant);
+  animateValue(el.equity, 0, equity, 500, instant);
+  animateValue(el.payment, 0, fees + equity, 500, instant);
 }
 
 el.loanRange.oninput = updateLoan;
@@ -248,7 +260,6 @@ function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
 
   $('pdfTotal').textContent = format(total);
 
-  // ✅ FIX PDF KHÔNG FORMAT LẠI
   $('pdfPercent').textContent = el.loanPercent.textContent;
   $('pdfLoan').textContent = el.loanAmount.textContent;
   $('pdfOwn').textContent = el.equity.textContent;
@@ -297,17 +308,16 @@ $('pdfBtn').onclick = async () => {
       service;
 
     updatePDF(car, ver, price, v.promo, final, tax, a, service, total);
+    renderGifts(true);
 
     $('pdfDate').textContent = "Ngày: .... / .... / 2026";
 
-    // 👉 HIỆN PDF UI
     app.style.display = 'none';
     pdf.style.display = 'block';
 
     await new Promise(r => setTimeout(r, 200));
 
     const clone = pdf.cloneNode(true);
-
     clone.style.position = 'fixed';
     clone.style.left = '-9999px';
 
@@ -317,7 +327,6 @@ $('pdfBtn').onclick = async () => {
     document.body.appendChild(clone);
 
     const canvas = await html2canvas(clone, { scale: 2 });
-
     document.body.removeChild(clone);
 
     const img = canvas.toDataURL('image/jpeg', 0.8);
@@ -332,7 +341,6 @@ $('pdfBtn').onclick = async () => {
     doc.addImage(img, 'JPEG', (210 - w) / 2, 0, w, h);
 
     const blob = doc.output('blob');
-
     const file = new File([blob], 'bao-gia-xe-ford.pdf', {
       type: 'application/pdf'
     });
@@ -347,21 +355,20 @@ $('pdfBtn').onclick = async () => {
     }
 
   } catch (e) {
-  console.log("Share cancelled hoặc lỗi:", e);
 
-  // 👉 nếu user cancel → KHÔNG làm gì
-  if (e.name === 'AbortError') {
-    return;
-  }
+    if (e.name !== 'AbortError') {
+      console.error(e);
+      app.style.display = 'block';
+      pdf.style.display = 'none';
+    }
 
-  // 👉 chỉ fallback khi lỗi thật
-  $('appUI').style.display = 'block';
-  $('pdfUI').style.display = 'none';
   } finally {
     window.__EXPORTING_PDF__ = false;
   }
+
 };
-// ===== BACK BUTTON =====
+
+// ===== BACK =====
 const backBtn = $('backBtn');
 
 if (backBtn) {
