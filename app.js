@@ -170,6 +170,7 @@ function updateLoan() {
 }
 
 el.loanRange.oninput = updateLoan;
+el.loanRange.onchange = updateLoan; // 👈 THÊM DÒNG NÀY NGAY DƯỚI
 
 // ===== PDF DATA =====
 function updatePDF(car, ver, price, promo, final, tax, a, service, total) {
