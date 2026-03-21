@@ -142,7 +142,6 @@ function updateLoan() {
   const a = data[car].areas[area];
 
   const color = el.colorFee.checked ? 8000000 : 0;
-  const service = +el.serviceRange.value;
 
   const final = (v.price + color) - v.promo;
   const loan = Math.round(final * percent / 100);
