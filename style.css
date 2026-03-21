@@ -280,24 +280,28 @@ button:active {
 }
 
 /* GREEN */
-/* GREEN */
 .pdf-highlight-green {
   margin-top: 6px;
-  padding: 6px 10px;
-  background: #e8f5e9;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 13px;
-}
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #305853, #1B2A30);
+  color: #fff;
 
-/* FIX CHÍNH NẰM Ở ĐÂY */
-.pdf-highlight-green .pdf-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
 
-  margin: 0;          /* bỏ khoảng cách dư */
+/* label */
+.pdf-highlight-green div:first-child {
   font-size: 13px;
+  opacity: 0.9;
+}
+
+/* số tiền */
+.pdf-highlight-green div:last-child {
+  font-size: 18px;
+  font-weight: 700;
 }
 
 /* TOTAL */
