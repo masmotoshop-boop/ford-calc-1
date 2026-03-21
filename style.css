@@ -222,6 +222,10 @@ input[type="range"]::-webkit-slider-thumb {
 #appUI .result {
   display: none;
 }
+/* Mật khẩu */
+select:disabled {
+  opacity: 0.5;
+}
 
 /* ===================== */
 /* ===== UI PDF ===== */
