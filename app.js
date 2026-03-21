@@ -231,7 +231,8 @@ $('pdfBtn').onclick = async () => {
   });
 
   const canvas = await html2canvas(pdf, {
-    scale: 2
+  scale: 2,
+  scrollY: -window.scrollY
   });
 
   const img = canvas.toDataURL('image/jpeg', 0.7);
@@ -239,10 +240,24 @@ $('pdfBtn').onclick = async () => {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF('p', 'mm', 'a4');
 
-  const width = 210;
-  const height = canvas.height * width / canvas.width;
+  const pageWidth = 210;
+  const pageHeight = 297;
 
-  doc.addImage(img, 'JPEG', 0, 0, width, height);
+// kích thước canvas
+const imgWidth = canvas.width;
+const imgHeight = canvas.height;
+
+// tính tỷ lệ scale để fit vừa A4
+const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
+
+const finalWidth = imgWidth * ratio;
+const finalHeight = imgHeight * ratio;
+
+// canh giữa ngang (optional)
+const x = (pageWidth - finalWidth) / 2;
+const y = 0;
+
+doc.addImage(img, 'JPEG', x, y, finalWidth, finalHeight);
 
   const blob = doc.output('blob');
   const file = new File([blob], "bao-gia-xe-ford.pdf", {
