@@ -1,4 +1,4 @@
-ko/* ===== COLOR THEME ===== */
+/* ===== COLOR THEME ===== */
 :root {
   --primary: #305853;        /* Deep Teal */
   --secondary: #1B2A30;      /* Slate Blue */
@@ -339,27 +339,6 @@ button:active {
   font-size: 12px;
   color: #666;
   margin-top: 10px;
-}
-
-/* ===== GIÁ LỚN ===== */
-.pdf-big-price {
-  margin-top: 10px;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: #fff;
-  border-radius: 12px;
-  padding: 12px;
-  text-align: center;
-}
-
-.pdf-big-price div:first-child {
-  font-size: 12px;
-  opacity: 0.9;
-}
-
-.pdf-big-price div:last-child {
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 4px;
 }
 
 /* payment */
