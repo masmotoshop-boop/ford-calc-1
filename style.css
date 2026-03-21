@@ -467,3 +467,65 @@ button:active {
 #appUI .gift-item input {
   accent-color: #ff7a00;  /* màu cam brand */
 }
+#serviceFeeValue {
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+}
+input[type="range"] {
+  width: 100%;
+  height: 6px;
+}
+#appUI .checkbox {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#appUI .checkbox input {
+  transform: scale(1.25);
+  accent-color: #ff7a00;
+}
+input[type="range"]::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  background: #ff7a00;
+  border-radius: 50%;
+}
+#promoInput {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  margin-top: 8px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.15);
+
+  font-size: 16px;
+  font-weight: 600;
+
+  outline: none;
+
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+
+  transition: 0.2s;
+}
+
+#promoInput::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+#promoInput:focus {
+  border: 1px solid #ff7a00;
+  background: rgba(255,255,255,0.12);
+}
+.car-name,
+.pdf-car {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
