@@ -40,7 +40,8 @@ const el = {
   reg: $('registration'),
   road: $('roadFee'),
   ins: $('insurance'),
-  service: $('serviceFee'), // 👈 FIX mapping
+  serviceFee: $('serviceFee'),     // input slider
+  service: $('service'),           // hiển thị UI
 
   total: $('total'),
 
