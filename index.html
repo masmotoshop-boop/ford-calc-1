@@ -13,23 +13,18 @@
 
 <div id="appUI" class="app">
 
-  <div class="header">
-    <div class="title">🚗 Báo giá lăn bánh</div>
-    <div class="subtitle">Ford Việt Nam</div>
-  </div>
-
   <div class="card">
 
-    <label>Dòng xe</label>
+    <label>Chọn Dòng Xe</label>
     <select id="car"></select>
 
-    <label>Phiên bản</label>
+    <label>Chọn Phiên Bản</label>
     <select id="version"></select>
 
     <label>Khu vực</label>
     <select id="area"></select>
 
-    <label>Phí dịch vụ</label>
+    <label>Phí dịch vụ đăng ký</label>
     <input type="range" id="serviceRange">
 
     <div class="checkbox">
@@ -52,12 +47,12 @@
 
     <div class="divider"></div>
 
-    <div class="row"><span>Thuế</span><span id="tax"></span></div>
-    <div class="row"><span>Biển</span><span id="plate"></span></div>
-    <div class="row"><span>Đăng kiểm</span><span id="registration"></span></div>
-    <div class="row"><span>Đường bộ</span><span id="roadFee"></span></div>
-    <div class="row"><span>Bảo hiểm</span><span id="insurance"></span></div>
-    <div class="row"><span>Dịch vụ</span><span id="serviceFee"></span></div>
+    <div class="row"><span>Thuế trước bạ</span><span id="tax"></span></div>
+    <div class="row"><span>Biển số</span><span id="plate"></span></div>
+    <div class="row"><span>Phí Đăng kiểm</span><span id="registration"></span></div>
+    <div class="row"><span>Phí Đường bộ</span><span id="roadFee"></span></div>
+    <div class="row"><span>Bảo hiểm TNDS</span><span id="insurance"></span></div>
+    <div class="row"><span>Dịch vụ đăng ký</span><span id="serviceFee"></span></div>
 
     <div class="total">
       <span>TỔNG LĂN BÁNH</span>
@@ -68,14 +63,14 @@
 
   <div class="card">
 
-    <div class="section-title">VAY & THANH TOÁN</div>
+    <div class="section-title">MUA QUA BANK</div>
 
     <input type="range" id="loanRange">
 
     <div class="row"><span>Tỷ lệ vay</span><span id="loanPercent"></span></div>
     <div class="row"><span>Tiền vay</span><span id="loanAmount"></span></div>
-    <div class="row"><span>Chi phí</span><span id="costs"></span></div>
-    <div class="row"><span>Vốn</span><span id="equity"></span></div>
+    <div class="row"><span>Chi phí lăn bánh</span><span id="costs"></span></div>
+    <div class="row"><span>Vốn đối ứng</span><span id="equity"></span></div>
 
     <!-- 🔥 TRẢ TRƯỚC -->
     <div class="payment-box">
@@ -123,33 +118,35 @@
     <div class="pdf-card">
       <div class="pdf-section">CHI PHÍ LĂN BÁNH</div>
 
-      <div class="pdf-row"><span>Thuế trước bạ</span><span id="pdfTax"></span></div>
-      <div class="pdf-row"><span>Biển số</span><span id="pdfPlate"></span></div>
-      <div class="pdf-row"><span>Đăng kiểm</span><span id="pdfReg"></span></div>
-      <div class="pdf-row"><span>Đường bộ</span><span id="pdfRoad"></span></div>
+      <div class="pdf-row"><span>Thuế trước bạ (tạm tính)</span><span id="pdfTax"></span></div>
+      <div class="pdf-row"><span>Phí Biển số</span><span id="pdfPlate"></span></div>
+      <div class="pdf-row"><span>Phí đăng kiểm</span><span id="pdfReg"></span></div>
+      <div class="pdf-row"><span>Phí đường bộ</span><span id="pdfRoad"></span></div>
       <div class="pdf-row"><span>Bảo hiểm TNDS</span><span id="pdfIns"></span></div>
-      <div class="pdf-row"><span>Dịch vụ</span><span id="pdfService"></span></div>
+      <div class="pdf-row"><span>Dịch vụ đăng ký</span><span id="pdfService"></span></div>
     </div>
 
     <!-- TỔNG -->
-    <div class="pdf-total">
-      TỔNG LĂN BÁNH: <span id="pdfTotal"></span>
-    </div>
+<div class="pdf-total">
+  <span>TỔNG LĂN BÁNH</span>
+  <span id="pdfTotal"></span>
+</div>
 
     <!-- VAY -->
    <div class="pdf-card">
-  <div class="pdf-section">PHƯƠNG THỨC THANH TOÁN</div>
+  <div class="pdf-section">PHƯƠNG THỨC MUA QUA BANK</div>
 
   <div class="pdf-row"><span>% vay</span><span id="pdfPercent"></span></div>
-  <div class="pdf-row"><span>Tiền vay</span><span id="pdfLoan"></span></div>
-  <div class="pdf-row"><span>Vốn</span><span id="pdfOwn"></span></div>
-  <div class="pdf-row"><span>Chi phí</span><span id="pdfCost"></span></div>
+  <div class="pdf-row"><span>Số tiền vay</span><span id="pdfLoan"></span></div>
+  <div class="pdf-row"><span>Vốn đối ứng</span><span id="pdfOwn"></span></div>
+  <div class="pdf-row"><span>Chi phí đăng ký</span><span id="pdfCost"></span></div>
 </div>
 
     <!-- TRẢ TRƯỚC -->
-    <div class="pdf-pay">
-      TRẢ TRƯỚC: <span id="pdfPay"></span>
-    </div>
+<div class="pdf-pay">
+  <span>TRẢ TRƯỚC</span>
+  <span id="pdfPay"></span>
+</div>
 
     <!-- QUÀ -->
     <div class="pdf-card">
