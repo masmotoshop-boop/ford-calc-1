@@ -416,7 +416,7 @@ button:active {
 #backBtn {
   width: 100%;
   margin-top: 16px;
-  padding: 12px;
+  padding: 12px;	
   border-radius: 10px;
   border: none;
   font-weight: 600;
@@ -433,4 +433,37 @@ button:active {
 /* 👉 khi chụp PDF thì ẩn */
 #pdfUI.capture .no-print {
   display: none;
+}
+/* Ẩn result chỉ trong app UI */
+#appUI .result {
+  display: none;
+}
+/* ===== APP ONLY - GIẢM KHUNG TRẢ TRƯỚC ===== */
+#appUI .payment-box {
+  padding: 8px 10px;              /* giảm chiều cao */
+  border-radius: 10px;
+  margin-top: 10px;
+
+  /* giảm độ gắt */
+  background: linear-gradient(135deg, #9e2c21, #7a1f1a);
+
+  box-shadow: none;               /* bỏ glow */
+}
+
+#appUI .payment-box div:first-child {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+#appUI .payment-box div:last-child {
+  font-size: 18px;               /* nhỏ lại */
+  font-weight: 600;
+  margin-top: 2px;
+}
+#appUI .gift-item {
+  color: #0f172a;   /* đậm, hiện đại */
+  font-weight: 600;
+}
+#appUI .gift-item input {
+  accent-color: #ff7a00;  /* màu cam brand */
 }
