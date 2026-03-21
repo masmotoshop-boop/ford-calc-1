@@ -1,6 +1,7 @@
 const FORD_DATA = {
 
   "Territory": {
+    "password": "ABCDE",
     "versions": {
       "Trend": { "price": 762000000, "promo": 20000000 },
       "Titanium": { "price": 840000000, "promo": 25000000 },
@@ -14,6 +15,7 @@ const FORD_DATA = {
   },
 
   "Ranger": {
+    "password": "ABCDE",
     "versions": {
       "XL": { "price": 669000000, "promo": 0 },
       "XLS 4x2": { "price": 707000000, "promo": 27000000 },
@@ -30,6 +32,7 @@ const FORD_DATA = {
   },
 
   "Everest": {
+    "password": "ABCDE",
     "versions": {
       "Ambiente": { "price": 1099000000, "promo": 30000000 },
       "Sport": { "price": 1178000000, "promo": 30000000 },
@@ -46,6 +49,7 @@ const FORD_DATA = {
   },
 
   "Transit": {
+    "password": "ABCDE",
     "versions": {
       "Trend": { "price": 907000000, "promo": 48000000 },
       "Premium 16": { "price": 999000000, "promo": 50000000 },
