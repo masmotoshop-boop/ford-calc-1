@@ -136,22 +136,37 @@ const el = {
   selectedCar: $('selectedCar'),
   promoMode: $('promoMode'),
   promoInput: $('promoInput'),
+  passwordInput: $('passwordInput'),
 };
-
+// ===== LOCK UI BAN ĐẦU =====
+el.car.disabled = true;
+el.version.disabled = true;
+el.area.disabled = true;
 // SERVICE
 el.serviceFee.oninput = () => {
   el.serviceFeeValue.textContent = formatMoney(el.serviceFee.value);
   calculate();
 };
 
-// PROMO MODE
-el.promoMode.onchange = () => {
-  if (el.promoMode.value === 'manual') {
-    el.promoInput.style.display = 'block';
-  } else {
-    el.promoInput.style.display = 'none';
+// ===== CHECK PASSWORD REALTIME =====
+el.passwordInput.oninput = () => {
+
+  const pass = el.passwordInput.value.trim().toUpperCase();
+
+  if (pass.length < 5) {
+    el.car.disabled = true;
+    el.version.disabled = true;
+    el.area.disabled = true;
+    return;
   }
-  calculate();
+
+  el.car.disabled = false;
+
+  // reset khi đổi password
+  el.version.innerHTML = '';
+  el.area.innerHTML = '';
+  el.version.disabled = true;
+  el.area.disabled = true;
 };
 // ===== LOAD CAR =====
 el.car.innerHTML = '<option value="">Chọn xe</option>';
@@ -159,14 +174,38 @@ Object.keys(data).forEach(c => el.car.add(new Option(c, c)));
 
 // ===== CHANGE CAR =====
 el.car.onchange = () => {
-  const car = data[el.car.value];
+
+  const carName = el.car.value;
+
+  // ❌ sai password
+  if (!checkPassword(carName)) {
+
+    alert("Sai mật khẩu");
+
+    el.car.value = '';
+    el.version.innerHTML = '';
+    el.area.innerHTML = '';
+
+    el.version.disabled = true;
+    el.area.disabled = true;
+
+    return;
+  }
+
+  const car = data[carName];
   if (!car) return;
 
+  // ✅ mở khóa
+  el.version.disabled = false;
+  el.area.disabled = false;
+
+  // load version
   el.version.innerHTML = '<option value="">Chọn phiên bản</option>';
   Object.keys(car.versions).forEach(v => {
     el.version.add(new Option(v, v));
   });
 
+  // load area
   el.area.innerHTML = '<option value="">Chọn khu vực</option>';
   Object.keys(car.areas).forEach(a => {
     el.area.add(new Option(a, a));
@@ -182,6 +221,7 @@ el.colorFee.onchange = calculate;
 function calculate() {
 
   const car = el.car.value;
+  if (!checkPassword(car)) return;
   const ver = el.version.value;
   const area = el.area.value;
 
@@ -230,7 +270,17 @@ const final = price - promo;
   updateLoan();
   updatePDF(car, ver, price, promo, final, tax, a, service, total);
 }
+// ===== PASSWORD =====
+function checkPassword(car) {
 
+  const input = (el.passwordInput.value || '').trim().toUpperCase();
+
+  if (!car || !data[car]) return false;
+
+  const correct = (data[car].password || '').toUpperCase();
+
+  return input === correct;
+}
 // ===== LOAN =====
 function updateLoan() {
 
