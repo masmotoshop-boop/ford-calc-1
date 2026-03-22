@@ -31,7 +31,7 @@ function animateValue(el, start, end, duration = 500, instant = false) {
 
 // ===== DATA =====
 const data = typeof FORD_DATA !== "undefined" ? FORD_DATA : {};
-
+const SYSTEM_PASSWORD = "140589";
 // ===== GIFTS =====
 let gifts = [
   { name: "Bao Tay Lái", checked: true },
@@ -138,6 +138,22 @@ const el = {
   promoInput: $('promoInput'),
   passwordInput: $('passwordInput'),
 };
+// 👁 toggle show/hide password (kèm đổi icon)
+const toggle = document.querySelector('.toggle-pass');
+
+if (toggle) {
+  toggle.onclick = () => {
+    const input = el.passwordInput;
+
+    if (input.type === 'password') {
+      input.type = 'text';
+      toggle.textContent = '🙈';
+    } else {
+      input.type = 'password';
+      toggle.textContent = '👁';
+    }
+  };
+}
 // ===== LOCK UI BAN ĐẦU =====
 el.car.disabled = true;
 el.version.disabled = true;
@@ -153,20 +169,41 @@ el.passwordInput.oninput = () => {
 
   const pass = el.passwordInput.value.trim().toUpperCase();
 
-  if (pass.length < 5) {
+  // ❌ sai password → khóa
+  if (pass !== SYSTEM_PASSWORD) {
     el.car.disabled = true;
     el.version.disabled = true;
     el.area.disabled = true;
     return;
   }
 
+  // ✅ đúng password → mở khóa
   el.car.disabled = false;
 
-  // reset khi đổi password
-  el.version.innerHTML = '';
-  el.area.innerHTML = '';
-  el.version.disabled = true;
-  el.area.disabled = true;
+  // ===== FADE INPUT =====
+  el.passwordInput.classList.add('password-hidden');
+
+  setTimeout(() => {
+
+    // ẩn input
+    el.passwordInput.style.display = 'none';
+
+    // ẩn label nếu có
+    const label = el.passwordInput.previousElementSibling;
+    if (label) label.style.display = 'none';
+
+    // ===== HIỆN "ĐÃ XÁC THỰC" (CHỈ 1 LẦN) =====
+    if (!document.querySelector('.password-ok')) {
+
+      const okText = document.createElement('div');
+      okText.className = 'password-ok';
+      okText.textContent = '✔ Đã xác thực';
+
+      el.passwordInput.parentNode.appendChild(okText);
+    }
+
+  }, 300);
+
 };
 // ===== LOAD CAR =====
 el.car.innerHTML = '<option value="">Chọn xe</option>';
@@ -178,7 +215,7 @@ el.car.onchange = () => {
   const carName = el.car.value;
 
   // ❌ sai password
-  if (!checkPassword(carName)) {
+  if (!checkPassword()) {
 
     alert("Sai mật khẩu");
 
@@ -221,7 +258,9 @@ el.colorFee.onchange = calculate;
 function calculate() {
 
   const car = el.car.value;
-  if (!checkPassword(car)) return;
+
+  // ❌ chỉ chặn nếu chưa chọn xe
+  if (!car) return;
   const ver = el.version.value;
   const area = el.area.value;
 
@@ -237,7 +276,15 @@ function calculate() {
   let promo = v.promo;
 
 if (el.promoMode.value === 'manual') {
- promo = Number(el.promoInput.value.replace(/\./g, '')) || 0;
+
+  const raw = el.promoInput.value.replace(/\./g, '').trim();
+
+  if (!raw || isNaN(raw)) {
+    promo = 0;
+  } else {
+    promo = Number(raw);
+  }
+
 }
 
 const final = price - promo;
@@ -271,15 +318,9 @@ const final = price - promo;
   updatePDF(car, ver, price, promo, final, tax, a, service, total);
 }
 // ===== PASSWORD =====
-function checkPassword(car) {
-
+function checkPassword() {
   const input = (el.passwordInput.value || '').trim().toUpperCase();
-
-  if (!car || !data[car]) return false;
-
-  const correct = (data[car].password || '').toUpperCase();
-
-  return input === correct;
+  return input === SYSTEM_PASSWORD;
 }
 // ===== LOAN =====
 function updateLoan() {
@@ -300,11 +341,15 @@ function updateLoan() {
   // ===== PROMO (FIX CHUẨN) =====
   let promo = v.promo;
 
-  if (el.promoMode && el.promoMode.value === 'manual') {
-    promo = Number(
-      (el.promoInput.value || '0').replace(/\./g, '')
-    ) || 0;
+if (el.promoMode && el.promoMode.value === 'manual') {
+  const raw = (el.promoInput.value || '').replace(/\./g, '').trim();
+
+  if (!raw || isNaN(raw)) {
+    promo = 0;
+  } else {
+    promo = Number(raw);
   }
+} // 👈 BẮT BUỘC PHẢI CÓ
 
   // ===== FINAL =====
   const price = v.price + color;
@@ -337,15 +382,29 @@ function updateLoan() {
 
 // ===== EVENT =====
 el.loanRange.oninput = updateLoan;
+// ===== PROMO MODE =====
+el.promoMode.onchange = () => {
+
+  if (el.promoMode.value === 'manual') {
+    el.promoInput.style.display = 'block';
+  } else {
+    el.promoInput.style.display = 'none';
+  }
+
+  calculate();
+  updateLoan();
+};
 el.loanRange.onchange = updateLoan;
 
 // 👉 QUAN TRỌNG: khi nhập promo → phải update loan luôn
 el.promoInput.oninput = () => {
 
-  // format hiển thị
-  el.promoInput.value = formatInputNumber(el.promoInput.value);
+  // chỉ giữ số
+  let raw = el.promoInput.value.replace(/\D/g, '');
 
-  // tính lại
+  // format lại
+  el.promoInput.value = formatInputNumber(raw);
+
   calculate();
   updateLoan();
 };
@@ -401,16 +460,24 @@ $('pdfBtn').onclick = async () => {
     const a = data[car].areas[area];
 
     const color = el.colorFee.checked ? 8000000 : 0;
-    const service = Number(el.serviceFee.value);
+    const service = Number(el.serviceFee.value || 0);
 
     const price = v.price + color;
     let promo = v.promo;
 
 if (el.promoMode.value === 'manual') {
-  promo = Number(el.promoInput.value.replace(/\./g, '')) || 0;
+
+  const raw = el.promoInput.value.replace(/\./g, '').trim();
+
+  if (!raw || isNaN(raw)) {
+    promo = 0;
+  } else {
+    promo = Number(raw);
+  }
+
 }
 
-const final = price - promo;
+const final = Math.max(0, price - promo);
     const tax = Math.round(price * a.tax);
 
     const total =
